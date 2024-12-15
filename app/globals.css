@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html,
+body,
+:root {
+  height: 100%;
+  @apply bg-primary-1 text-n-1;
+}
+
+.hidden-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.hidden-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+@layer base {
+    :root {
+      --background: #FFFFFF; /* Light neutral background */
+      --foreground: #1A1A1A; /* Dark text */
+      --primary: #ADD8E6; /* Light Blue */
+      --on-primary: #FFFFFF; /* White on light blue */
+      --secondary: #FFA500; /* Orange */
+      --on-secondary: #FFFFFF; /* White on orange */
+      --tertiary: #FFA500; /* Orange for buttons */
+      --on-tertiary: #FFFFFF; /* White on buttons */
+      --error: #FF4500; /* Red-orange */
+      --on-error: #FFFFFF; /* White on errors */
+      --outline: #B0BEC5; /* Light Gray */
+    }
+  
+    .dark {
+      /* Dark mode colors */
+      --background: #0D1117; /* Dark neutral background */
+      --foreground: #EAEAEA; /* Light text */
+      --primary: #1E90FF; /* Bright Blue */
+      --on-primary: #0D1117; /* Dark on bright blue */
+      --secondary: #FF8C00; /* Vibrant Orange */
+      --on-secondary: #0D1117; /* Dark on orange */
+      --tertiary: #FF8C00; /* Orange for buttons */
+      --on-tertiary: #0D1117; /* Dark on buttons */
+      --error: #FF6347; /* Tomato */
+      --on-error: #0D1117; /* Dark on errors */
+      --outline: #374151; /* Dark Gray */
+    }
+  }
+
+@layer base {
+  body {
+    @apply bg-primary-1;
+  }
+}

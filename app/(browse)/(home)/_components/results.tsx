@@ -1,0 +1,36 @@
+import { Skeleton } from "@/components/ui/skeleton";
+import ResultCard, { ResultCardSkeleton } from "./result-card";
+import { getStreams } from "@/lib/feed-service";
+
+
+const Results = async () => {
+  const data = await getStreams();
+
+  return (
+    <div>
+      {data.length === 0 && (
+        <div className="text-n-1 text-sm">No streams found.</div>
+      )}
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 px-4 lg:px-8">
+        {data.map((result) => (
+          <ResultCard key={result.id } data={result} />
+        ))}
+      </div>
+    </div>
+  );
+};
+
+export default Results;
+
+export const ResultsSkeleton = () => {
+  return (
+    <div>
+      <Skeleton className="h-8 mb-4 mx-8" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 px-8">
+        {[...Array(4)].map((_, i) => (
+          <ResultCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  );
+};
