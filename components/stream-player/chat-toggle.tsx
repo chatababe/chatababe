@@ -4,32 +4,26 @@ import { ArrowLeftFromLine, ArrowRightFromLine } from "lucide-react";
 
 import Hint from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
+import { useChatSidebar } from "@/store/use-chat-sidebar";
+import { cn } from "@/lib/utils";
 
-
-const ChatToggle= () => {
-
-  const [collapsed, setCollapsed] = useState(false)
+const ChatToggle = ({text}:{text?:string}) => {
+  const { collapsed, onExpand, onCollapse } = useChatSidebar((state) => state);
   const Icon = collapsed ? ArrowLeftFromLine : ArrowRightFromLine;
-
   const onToggle = () => {
-    setCollapsed((prev) => !prev); // Toggle the collapsed state
+    if (collapsed) {
+      onExpand();
+    } else {
+      onCollapse();
+    }
   };
-
   const label = collapsed ? "Expand" : "Collapse";
 
   return (
-    <Hint
-      label={label}
-      side="left"
-      asChild
-    >
-      <Button
-        onClick={onToggle}
-        variant="ghost"
-        className="h-auto p-2"
-      >
-        <Icon className="h-4 w-4" />
+    <Hint label={label} side="left" asChild>
+      <Button onClick={onToggle} variant={!!text ? "default" :"ghost"} className="h-auto p-2">
+        <Icon className={cn("h-4 w-4",collapsed && "mr-2")} />
+        {text}
       </Button>
     </Hint>
   );

@@ -59,7 +59,7 @@ const ChatCommunity = ({
       <Input
         onChange={(e) => onChange(e.target.value)}
         placeholder="Search community"
-        className="border ring-offset-n-3 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
+        className="border bg-n-4/20 ring-offset-n-3 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0"
       />
       <ScrollArea className="gap-y-2 mt-4">
         <p className="text-center text-sm text-n-1 hidden last:block p-2">

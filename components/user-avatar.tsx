@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-object-type */
 import { cva, type VariantProps } from "class-variance-authority";
 
 import { cn } from "@/lib/utils";
@@ -37,7 +38,7 @@ const UserAvatar = ({
   return (
     <div className="relative">
       <Avatar
-        className={cn(isLive && "ring-2 ring-primary", avatarSizes({ size }))}
+        className={cn(isLive && "ring-2 ring-primary-3", avatarSizes({ size }))}
       >
         <AvatarImage
           src={imageUrl}

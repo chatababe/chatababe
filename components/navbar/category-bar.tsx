@@ -9,7 +9,7 @@ import React from "react";
 
 const Categorybar = () => {
  
-  const [openSettings,setOpenSettings] = useState(false)
+  const [openSettings,setOpenSettings] = useState(false);
   return (
     <>
       <div className="overflow-hidden mx-8 my-2 border-b border-n-4/40 max-lg:hidden">

@@ -11,6 +11,8 @@ import VerifiedMark from "@/components/verified-mark";
 import UserAvatar, { UserAvatarSkeleton } from "@/components/user-avatar";
 
 import Actions, { ActionsSkeleton } from "./actions";
+import { useChatSidebar } from "@/store/use-chat-sidebar";
+import ChatToggle from "./chat-toggle";
 
 interface HeaderProps {
   imageUrl: string;
@@ -30,6 +32,7 @@ const Header = ({
 }: HeaderProps) => {
   const participants = useParticipants();
   const participant = useRemoteParticipant(hostIdentity);
+  const { collapsed } = useChatSidebar((state) => state);
 
   const isLive = !!participant;
   const participantCount = participants.length - 1;
@@ -38,7 +41,7 @@ const Header = ({
   const isHost = viewerIdentity === hostAsViewer;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 items-start justify-between px-4">
+    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2">
       <div className="flex items-center gap-x-3">
         <UserAvatar
           imageUrl={imageUrl}
@@ -61,17 +64,22 @@ const Header = ({
               </p>
             </div>
           ) : (
-            <p className="font-semibold text-xs text-n-3">
-              Offline
-            </p>
+            <p className="font-semibold text-xs text-n-3">Offline</p>
           )}
         </div>
       </div>
-      <Actions
-        isFollowing={isFollowing}
-        hostIdentity={hostIdentity}
-        isHost={isHost}
-      />
+      <div className="flex space-x-2">
+        <Actions
+          isFollowing={isFollowing}
+          hostIdentity={hostIdentity}
+          isHost={isHost}
+        />
+        {collapsed && (
+          <div className="hidden lg:block z-50 w-full ">
+            <ChatToggle text="show chat" />
+          </div>
+        )}
+      </div>
     </div>
   );
 };

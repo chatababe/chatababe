@@ -13,6 +13,7 @@ import ChatForm, { ChatFormSkeleton } from "./chat-form";
 import ChatList, { ChatListSkeleton } from "./chat-list";
 import ChatHeader, { ChatHeaderSkeleton } from "./chat-header";
 import ChatCommunity from "./chat-community";
+import { useChatSidebar } from "@/store/use-chat-sidebar";
 
 export enum ChatVariant {
   CHAT = "CHAT",
@@ -38,12 +39,11 @@ const Chat = ({
   isChatDelayed,
   isChatFollowersOnly,
 }: ChatProps) => {
+
   const matches = useMediaQuery("(max-width: 1024px)");
 
-  // Local state for sidebar management
-  const [collapsed, setCollapsed] = useState(false);
-  const [variant, setVariant] = useState(ChatVariant.CHAT);
 
+  const { variant, onExpand } = useChatSidebar((state) => state);
   const connectionState = useConnectionState();
   const participant = useRemoteParticipant(hostIdentity);
 
@@ -55,9 +55,9 @@ const Chat = ({
 
   useEffect(() => {
     if (matches) {
-      setCollapsed(false);
+      onExpand();
     }
-  }, [matches]);
+  }, [matches, onExpand]);
 
   const reversedMessages = useMemo(() => {
     return messages.sort((a, b) => b.timestamp - a.timestamp);
@@ -65,28 +65,19 @@ const Chat = ({
 
   const onSubmit = () => {
     if (!send) return;
-
     send(value);
     setValue("");
   };
-
+  
   const onChange = (value: string) => {
     setValue(value);
   };
-
-  const onExpand = () => setCollapsed(false);
-  const onCollapse = () => setCollapsed(true);
-  const onChangeVariant = (variant: ChatVariant) => setVariant(variant);
-
   return (
-    <div className="flex flex-col bg-n-5 border-l border-b pt-0 h-[calc(100vh-65px)]">
+    <div className="flex flex-col bg-n-5 border-l border-b pt-0 h-full">
       <ChatHeader />
       {variant === ChatVariant.CHAT && (
         <>
-          <ChatList
-            messages={reversedMessages}
-            isHidden={isHidden}
-          />
+          <ChatList messages={reversedMessages} isHidden={isHidden} />
           <ChatForm
             onSubmit={onSubmit}
             value={value}

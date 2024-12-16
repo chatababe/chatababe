@@ -28,7 +28,7 @@ const FullscreenControl = ({
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="text-primary p-1.5 hover:bg-foreground/10 rounded-lg"
+          className="text-n-5 p-1.5 rounded-lg"
         >
           <Icon className="h-5 w-5" />
         </Button>

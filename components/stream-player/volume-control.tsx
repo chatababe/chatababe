@@ -40,7 +40,7 @@ const VolumeControl = ({ onToggle, onChange, value }: VolumeControlProps) => {
           variant="ghost"
           size="icon"
           onClick={onToggle}
-          className="text-primary-1 p-1.5 hover:bg-s-2 rounded-lg"
+          className="text-n-5/60 p-1.5 hover:text-n-5 rounded-lg"
         >
           <Icon className="h-6 w-6" />
         </Button>

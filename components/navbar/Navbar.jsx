@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { navigation } from "@/constants";
 import { cn } from "@/lib/utils";
+import StreamModal from "../stream-modal";
 
 const Navbar = async () => {
   return (
@@ -20,12 +21,7 @@ const Navbar = async () => {
 
         <div className="h-[3rem] relative flex items-center text-n-5">
           <div className="mr-3">
-            <Link
-              href="/"
-              className="text-center text-white-100 text-sm font-poppins uppercase hover:underline"
-            >
-              Brodcast yourself
-            </Link>
+            <StreamModal/>
           </div>
           <div className="h-full px-4 bg-s-2 rounded-md flex flex-col items-center justify-center">
             <Link

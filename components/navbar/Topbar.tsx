@@ -3,8 +3,10 @@
 import { useState } from "react";
 import Modal from "./modal";
 import Link from "next/link";
-import { Menu, ArrowDownWideNarrow } from "lucide-react";
+import { Menu} from "lucide-react";
 import { navigation } from "@/constants";
+import Logo from "../logo";
+import ProfileModal from "./profile-modal";
 
 type User = {
   userName: string,
@@ -18,27 +20,17 @@ const Topbar = ({user}:{user:User}) => {
     <>
       <div className="px-6 py-3 bg-n-5 max-lg:border-b max-lg:border-neutral-500/40 lg:px-8 xl:px-12">
         <div className="flex justify-between items-center">
+          <Logo/>
+          <Modal user={user}/>
           <button
-            className="mr-auto lg:hidden"
+            className="ml-auto lg:hidden"
             onClick={() => setOpenNavigation(!openNavigation)}
           >
-            <Menu size={38} color="#4b5563" />
+            <Menu size={28} color="#4b5563" />
           </button>
-          <div className="flex flex-col items-center w-12rem xl:mr-8 lg:items-start ">
-            <p className="font-serif text-3xl font-bold text-n-1 mb-2">
-              Live
-              <span className="font-serif text-2xl font-bold text-s-2">
-                stream
-              </span>
-            </p>
-            <p className="text-xs font-semibold text-n-2">
-              Watch your favourite streams
-            </p>
+          <div className="lg:hidden">
+            <ProfileModal/>
           </div>
-          <Modal user={user}/>
-          <button className="ml-auto lg:hidden">
-            <ArrowDownWideNarrow size={38} color="#4b5563" />
-          </button>
         </div>
       </div>
       {openNavigation && (
