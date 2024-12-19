@@ -55,13 +55,16 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
   if (!token || !name || !identity) {
     return <StreamPlayerSkeleton />;
   }
+  
+  const isHost = identity.startsWith("host");
+  const hostIdentity = `host-${user.id}`;
 
   return (
     <>
       <LiveKitRoom
         token={token}
-        video={true}
-        audio={true}
+        video={isHost}
+        audio={isHost}
         serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_WS_URL}
         className={cn(
           "pl-4 grid grid-cols-4 lg:gap-y-0 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6",
@@ -69,10 +72,10 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
         )}
       >
         <div className="space-y-4 col-span-3 lg:col-span-3 xl:col-span-3 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-4 border-l  border-b ">
-          <Video hostName={user.username} hostIdentity={user.id} />
+          <Video hostName={user.username} hostIdentity={hostIdentity} />
           <Header
             hostName={user.username}
-            hostIdentity={user.id}
+            hostIdentity={hostIdentity}
             viewerIdentity={identity}
             imageUrl={user.imageUrl}
             isFollowing={isFollowing}
@@ -83,7 +86,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
           <Chat
             viewerName={name}
             hostName={user.username}
-            hostIdentity={user.id}
+            hostIdentity={hostIdentity}
             isFollowing={isFollowing}
             isChatEnabled={stream.isChatEnabled}
             isChatDelayed={stream.isChatDelayed}
@@ -92,13 +95,13 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
         </div>
         <div className="col-span-full">
           <InfoCard
-            hostIdentity={user.id}
+            hostIdentity={hostIdentity}
             viewerIdentity={identity}
             name={stream.name}
             thumbnailUrl={stream.thumbnailUrl}
           />
           <AboutCard
-            hostIdentity={user.id}
+            hostIdentity={hostIdentity}
             viewerIdentity={identity}
             hostProfile={user.profile}
             followedByCount={user._count.followedBy}

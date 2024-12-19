@@ -49,6 +49,7 @@ export const getUserById = async (id: string) => {
     where: { id },
     include: {
       stream: true,
+      profile: true,
     },
   });
 

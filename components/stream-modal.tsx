@@ -154,8 +154,7 @@ const StreamModal = () => {
               placeholder="Stream's goal/target"
               onChange={onChange}
               value={data.goal}
-              className="ring-offset-n-5 focus-visible:outline-none focus-visible:ring-0 
-focus-visible:ring-offset-0 bg-n-4/30 font-medium"
+              className="ring-offset-n-5 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-n-4/30 font-medium"
             />
           </div>
           <div className="flex items-center gap-4">

@@ -5,6 +5,7 @@ import { getSelfByUsername } from "@/lib/auth-service";
 import Sidebar from "./_components/sidebar";
 import Container from "./_components/container";
 import Header from "@/components/navbar";
+import Footer from "@/components/footer";
 
 interface CreatorLayoutProps {
   params: {
@@ -14,7 +15,8 @@ interface CreatorLayoutProps {
 }
 
 const CreatorLayout = async ({ params, children }: CreatorLayoutProps) => {
-  const self = await getSelfByUsername(params.username);
+  const {username} = await params;
+  const self = await getSelfByUsername(username);
 
   if (!self) {
     redirect("/");
@@ -23,10 +25,11 @@ const CreatorLayout = async ({ params, children }: CreatorLayoutProps) => {
   return (
     <>
       <Header/>
-      <div className="flex h-full pt-20">
+      <div className="flex">
         <Sidebar />
         <Container>{children}</Container>
       </div>
+      <Footer/>
     </>
   );
 };

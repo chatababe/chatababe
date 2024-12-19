@@ -64,7 +64,7 @@ function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("username")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
+          className="bg-n-5/20 max-w-sm focus-visible:ring-0 focus-visible:ring-transparent focus-visible:ring-offset-0"
         />
       </div>
       <div className="rounded-md border">

@@ -17,10 +17,10 @@ export const useViewerToken = (hostIdentity: string) => {
 
         const decodedToken = jwtDecode(viewerToken) as JwtPayload & {
           name?: string;
-          identity?: string;
+          identity?: string
         };
-        const name = decodedToken?.name || "Anonymous";
-        const identity = decodedToken?.identity || "unknown user";
+        const name = decodedToken?.name;
+        const identity = decodedToken?.sub;
 
         if (identity) {
           setIdentity(identity);

@@ -25,11 +25,11 @@ const NavItem = ({ icon: Icon, label, href, isActive }: NavItemProps) => {
       className={cn(
         "w-full h-12",
         collapsed ? "justify-center" : "justify-start",
-        isActive && "bg-primary-2"
+        isActive && "bg-primary-3"
       )}
     >
       <Link href={href}>
-        <div className="flex items-center gap-x-4">
+        <div className="flex items-center gap-x-4 text-n-2">
           <Icon className={cn("h-4 w-4", collapsed ? "mr-0" : "mr-2")} />
           {!collapsed && <span>{label}</span>}
         </div>

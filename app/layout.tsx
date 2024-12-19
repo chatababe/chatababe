@@ -18,7 +18,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+    signUpForceRedirectUrl={"/profile"}
+    >
       <html lang="en">
         <body className={inter.className}>
           <Toaster

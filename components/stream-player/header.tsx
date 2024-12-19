@@ -33,7 +33,7 @@ const Header = ({
   const participants = useParticipants();
   const participant = useRemoteParticipant(hostIdentity);
   const { collapsed } = useChatSidebar((state) => state);
-
+  
   const isLive = !!participant;
   const participantCount = participants.length - 1;
 

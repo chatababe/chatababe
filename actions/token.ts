@@ -32,13 +32,12 @@ export const createViewerToken = async (hostIdentity: string) => {
   }
 
   const isHost = self.id === host.id;
-  console.log(isHost)
 
   const token = new AccessToken(
-    process.env.LIVEKIT_API_KEY,
-    process.env.LIVEKIT_API_SECRET,
+    process.env.LIVEKIT_API_KEY!,
+    process.env.LIVEKIT_API_SECRET!,
     {
-      identity: self.id,
+      identity: isHost ? `host-${self.id}` : self.id,
       name: self.username,
     }
   );
@@ -47,7 +46,8 @@ export const createViewerToken = async (hostIdentity: string) => {
     room: host.id,
     roomJoin: true,
     canPublish: isHost,
-    canPublishData: true,
+    canPublishData: isHost,
+    canSubscribe:true,
   });
 
   return await Promise.resolve(token.toJwt());

@@ -5,15 +5,14 @@ import { currentUser } from "@clerk/nextjs/server";
 
 const Header = async () => {
   const user = await currentUser();
-  // get tokens
   const data = {
-    userName:user?.username || "",
+    userName:user?.username || "Anonymous",
     tokens: 10, 
   }
   return (
     <header className="w-full bg-white z-50 mb-2">
       <Topbar user={data}/>
-      <Navbar />
+      <Navbar/>
       <Categorybar />
     </header>
   );

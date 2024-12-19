@@ -39,9 +39,9 @@ model Profile {
   location   String  @db.Text
   preference String? @db.Text
   gender     String
-  socials    Json // Store links for social accounts (e.g., Twitter, Instagram)
-  photos     Json? // JSON array to store image URLs
-  videos     Json? // JSON array to store video URLs
+  socials    Json? 
+  photos     Json?
+  videos     Json?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
