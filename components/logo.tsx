@@ -19,7 +19,7 @@ function Logo() {
       href="/"
     >
       <Image
-        src='/logo.jpg'
+        src='/assets/icons/logo.svg'
         alt="logo"
         width={120}
         height={120}

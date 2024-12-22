@@ -24,7 +24,6 @@ const Header = async () => {
     <header className="w-full bg-white z-50 mb-2">
       <Topbar username={user?.username || "Anonymous"} currentTokens={user?.currentTokens || 0} />
       <Navbar />
-      <Categorybar />
     </header>
   );
 };

@@ -37,6 +37,7 @@ export const getUserByUsername = async (username: string) => {
       _count: {
         select: {
           followedBy: true,
+          following: true,
         },
       },
     },

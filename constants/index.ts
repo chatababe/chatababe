@@ -83,6 +83,33 @@ export const plans = [
   },
 ];
 
+export const locations = [
+  { value: 'us', label: 'United States' },
+  { value: 'uk', label: 'United Kingdom' },
+  { value: 'ca', label: 'Canada' },
+  { value: 'au', label: 'Australia' },
+  { value: 'in', label: 'India' },
+  { value: 'br', label: 'Brazil' },
+  { value: 'de', label: 'Germany' },
+  { value: 'fr', label: 'France' },
+  { value: 'jp', label: 'Japan' },
+  { value: 'kr', label: 'South Korea' },
+].sort((a, b) => a.label.localeCompare(b.label));
+
+export enum Preference {
+  MEN = "Men",
+  WOMEN = "women",
+  OTHERS = "others",
+  UNKNOWN = "Prefer not to say",
+}
+
+export enum Gender {
+  MALE = "male",
+  FEMALE = "female",
+  OTHERS = "others",
+  UNKNOWN = "Prefer not to say",
+}
+
 export const years = [
   "2024",
   "2023",
