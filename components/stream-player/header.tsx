@@ -13,6 +13,7 @@ import UserAvatar, { UserAvatarSkeleton } from "@/components/user-avatar";
 import Actions, { ActionsSkeleton } from "./actions";
 import { useChatSidebar } from "@/store/use-chat-sidebar";
 import ChatToggle from "./chat-toggle";
+import TipModal from "./tips-modal";
 
 interface HeaderProps {
   imageUrl: string;
@@ -33,7 +34,7 @@ const Header = ({
   const participants = useParticipants();
   const participant = useRemoteParticipant(hostIdentity);
   const { collapsed } = useChatSidebar((state) => state);
-  
+
   const isLive = !!participant;
   const participantCount = participants.length - 1;
 
@@ -69,11 +70,14 @@ const Header = ({
         </div>
       </div>
       <div className="flex space-x-2">
-        <Actions
-          isFollowing={isFollowing}
-          hostIdentity={hostIdentity}
-          isHost={isHost}
-        />
+        <div className="flex flex-col gap-2">
+          <Actions
+            isFollowing={isFollowing}
+            hostIdentity={hostIdentity}
+            isHost={isHost}
+          />
+          <TipModal />
+        </div>
         {collapsed && (
           <div className="hidden lg:block z-50 w-full ">
             <ChatToggle text="show chat" />

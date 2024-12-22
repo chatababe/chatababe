@@ -6,8 +6,17 @@ import Settingstab from "@/components/settings";
 import { categories } from "@/constants";
 import { ListFilter, Settings } from "lucide-react";
 import React from "react";
+import { useFilterSidebar } from "@/store/use-filter-sidebar";
 
 const Categorybar = () => {
+  const { collapsed, onExpand, onCollapse } = useFilterSidebar((state) => state);
+  const onToggle = () => {
+    if (collapsed) {
+      onCollapse();
+    } else {
+      onExpand();
+    }
+  };
  
   const [openSettings,setOpenSettings] = useState(false);
   return (
@@ -27,7 +36,7 @@ const Categorybar = () => {
             ))}
           </div>
           <div className="ml-auto flex items-center gap-4">
-            <button className="flex items-center p-1 rounded-sm">
+            <button className="flex items-center p-1 rounded-sm" onClick={onToggle}>
               <ListFilter size={16} color="#2563eb" />
               <p className="text-[10px] text-primary-2">Filters</p>
             </button>

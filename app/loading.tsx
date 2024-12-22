@@ -3,7 +3,7 @@ import { Loader2 } from 'lucide-react';
 
 const Loading = () => {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-4">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br p-4">
       <div className="text-center space-y-4 bg-white shadow-xl rounded-xl p-8 transform transition-all duration-300 hover:scale-105">
         <Loader2 
           className="mx-auto animate-spin text-primary-2" 

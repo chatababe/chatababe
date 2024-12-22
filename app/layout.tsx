@@ -8,8 +8,8 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "livestream",
-  description: "livestream is a live streaming platform.",
+  title: "Chatababe",
+  description: "Chatababe is a live streaming platform.",
 };
 
 export default function RootLayout({
@@ -19,9 +19,12 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-    signUpForceRedirectUrl={process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}
+      signUpForceRedirectUrl={process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}
     >
       <html lang="en">
+        <head>
+          <link rel="icon" type="image/png" sizes="32x32" href="/favicon.jpg" />
+        </head>
         <body className={inter.className}>
           <Toaster
             invert

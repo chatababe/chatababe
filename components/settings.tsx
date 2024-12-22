@@ -3,7 +3,7 @@ import React from "react";
 
 const Settingstab = ({setOpenSettings}: {setOpenSettings: React.Dispatch<React.SetStateAction<boolean>>}) => {
   return (
-    <div className="relative min-h-[8rem] px-6 py-4 mb-2 mx-8 bg-n-4/40 rounded-lg shadow-sm lg:px-8 max-lg:hidden">
+    <div className="relative min-h-[8rem] px-6 py-4 mb-2 mx-8 border border-n-4/40 rounded-lg shadow-sm lg:px-8 max-lg:hidden">
       <div className="flex items-center mb-2">
         <h1 className="text-sm text-s-1 font-semibold capitalize mb-2">
           options

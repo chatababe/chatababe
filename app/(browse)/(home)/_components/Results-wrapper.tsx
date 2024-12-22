@@ -1,10 +1,10 @@
 import { Suspense } from "react";
 
-import Results, { ResultsSkeleton } from "./_components/results";
+import Results, { ResultsSkeleton } from "./results";
 
-export default function RootPage() {
+export default function ResultsWrapper() {
   return (
-    <div className="h-full">
+    <div className="max-w-screen-2xl">
       <Suspense fallback={<ResultsSkeleton />}>
         <Results/>
       </Suspense>

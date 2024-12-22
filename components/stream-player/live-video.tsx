@@ -58,22 +58,33 @@ const LiveVideo = ({ hostIdentity }: LiveVideoProps) => {
   };
 
   useEventListener("fullscreenchange", handleFullscreenChange, wrapperRef);
-  console.log(videoRef.current);
 
   const tracks = useTracks([Track.Source.Camera, Track.Source.Microphone]);
-  tracks
-    .filter((track) => track.participant.identity === hostIdentity)
-    .forEach((track) => {
-      if (local.identity === hostIdentity) {
+  useEffect(() => {
+    // If the user is the host, attach their own video
+    if (local.identity === hostIdentity) {
+      const hostVideoTrack = tracks.find(
+        (track) => track.participant.identity === hostIdentity && track.source === Track.Source.Camera
+      );
+      if (hostVideoTrack && videoRef.current) {
+        hostVideoTrack.publication.track?.attach(videoRef.current);
+      }
+    }
+    
+    // If the user is not the host, subscribe to the host's tracks
+    if (local.identity !== hostIdentity) {
+      const hostTracks = tracks.filter((track) => track.participant.identity === hostIdentity);
+      hostTracks.forEach((track) => {
         if (videoRef.current) {
           track.publication.track?.attach(videoRef.current);
         }
-      }
-    });
+      });
+    }
+  }, [tracks, local.identity, hostIdentity]);
 
   return (
     <div ref={wrapperRef} className="relative h-full flex">
-      <video ref={videoRef} width="100%" />
+      <video ref={videoRef} width="100%" muted={local.identity !== hostIdentity}/>
       <div className="absolute top-0 h-full w-full opacity-0 hover:opacity-100 hover:transition-all">
         <div className="absolute bottom-0 flex h-10 w-full items-center justify-between bg-n-1/40 px-4">
           <VolumeControl

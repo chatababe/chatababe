@@ -2,7 +2,7 @@ import Link from "next/link";
 import React from "react";
 import Logo from "./logo";
 import { Button } from "./ui/button";
-import { Mail } from "lucide-react";
+import Image from "next/image";
 
 const footerSections = {
   platform: {
@@ -33,6 +33,7 @@ const Footer: React.FC = () => {
   return (
     <footer className="bg-primary-1 text-n-3 py-6 border-t border-n-4/60 mt-12">
       <div className="container mx-auto px-8">
+        {/*  
         <div className="grid grid-cols-2 gap-8 md:grid-cols-4 ">
           <div>
             <Logo />
@@ -58,6 +59,7 @@ const Footer: React.FC = () => {
             </div>
           ))}
         </div>
+        */}
 
         <div className="mt-2  mr-8 flex flex-col md:flex-row justify-between items-center text-sm text-n-3">
           <div>
@@ -71,8 +73,57 @@ const Footer: React.FC = () => {
               asChild
             >
               <Link href="/">
-                <Mail className="h-5 w-5 lg:mr-2" color="#7e7575"/>
-                
+                <Image
+                  src="/assets/icons/email.svg"
+                  alt="email"
+                  width={22}
+                  height={22}
+                />
+              </Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              className="text-n-5/90 hover:text-n-5"
+              asChild
+            >
+              <Link href="/">
+                <Image
+                  src="/assets/icons/facebook.svg"
+                  alt="facebook"
+                  width={22}
+                  height={22}
+                />
+              </Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              className="text-n-5/90 hover:text-n-5"
+              asChild
+            >
+              <Link href="/">
+                <Image
+                  src="/assets/icons/twitter.svg"
+                  alt="twitter"
+                  width={22}
+                  height={22}
+                />
+              </Link>
+            </Button>
+            <Button
+              size="sm"
+              variant="link"
+              className="text-n-5/90 hover:text-n-5"
+              asChild
+            >
+              <Link href="/">
+                <Image
+                  src="/assets/icons/instagram.svg"
+                  alt="instagram"
+                  width={22}
+                  height={22}
+                />
               </Link>
             </Button>
           </div>

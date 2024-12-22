@@ -2,26 +2,22 @@
 
 import React from "react";
 import { MessageCircle, Bell, UserCircle } from "lucide-react";
-import { SignInButton, SignOutButton, UserButton } from "@clerk/nextjs";
+import { SignInButton, SignOutButton } from "@clerk/nextjs";
 import TokenModal from "../tokens-modal";
 
 interface UserProps {
-  username: string,
-  currentTokens: number
+  username: string;
+  currentTokens: number;
 }
 
-const Modal = ({username,currentTokens}:UserProps) => {
+const Modal = ({ username, currentTokens }: UserProps) => {
   return (
     <div className=" relative min-w-[16rem] max-lg:hidden">
       <div className="">
         <div className="bg-primary-2 flex items-center p-2 rounded-t-lg ">
-          {username === "Anonymous" ? (
-            <button>
-              <UserCircle size={18} color="#FFFFFF" />
-            </button>
-          ) : (
-            <UserButton />
-          )}
+          <button>
+            <UserCircle size={18} color="#FFFFFF" />
+          </button>
           <div className="ml-auto flex items-center gap-3">
             <button>
               <MessageCircle size={16} color="#FFFFFF" />
@@ -35,9 +31,7 @@ const Modal = ({username,currentTokens}:UserProps) => {
           <div className="flex items-center w-full mb-2">
             <p className="text-xs text-n-2 font-semibold">
               Status:{" "}
-              <span className="text-sm text-n-2 font-bold">
-                {username}
-              </span>
+              <span className="text-sm text-n-2 font-bold">{username}</span>
             </p>
             {username === "Anonymous" ? (
               <SignInButton>
@@ -60,7 +54,7 @@ const Modal = ({username,currentTokens}:UserProps) => {
                 {currentTokens} tokens
               </span>
             </p>
-            <TokenModal/>
+            <TokenModal />
           </div>
         </div>
       </div>

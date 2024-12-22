@@ -8,7 +8,6 @@ const Header = async () => {
   const self = await currentUser();
   
   if (!self) {
-    // If 'self' is undefined, you don't need to fetch user by username
     return (
       <header className="w-full bg-white z-50 mb-2">
         <Topbar username="Anonymous" currentTokens={0} />
