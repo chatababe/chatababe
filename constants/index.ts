@@ -58,21 +58,27 @@ export const categories = [
     title: "trans",
   },
 ]
-export const footerLinks = [
-  { label: 'Swag', href: '#' },
-  { label: 'Terms & Conditions', href: '#' },
-  { label: 'Privacy Policy', href: '#' },
-  { label: 'Support', href: '#' },
-  { label: 'DMCA / Remove Content', href: '#' },
-  { label: 'Feedback', href: '#' },
-  { label: 'Security Center', href: '#' },
-  { label: 'Law Enforcement', href: '#' },
-  { label: 'Report Nonconsensual/Abusive Content', href: '#' },
-];
 
-export const footerInfo = {
-  recordKeepingRequirements: '18 U.S.C. 2257 Record Keeping Requirements Compliance Statement',
-  mainOffice: 'Multi Media, LLC 23615 El Toro Rd #A344, Lake Forest, CA 92630, USA',
-  copyright: '© Copyright Chaturbate.com 2011 - 2024. All Rights Reserved.',
-  websiteUrl: 'www.3-ext-lsmg:4a9b6308ae7e',
-};
+export const plans = [
+  {
+    _id: 1,
+    name: "Basic Package",
+    icon: "/free-plan.svg",
+    price: 20,
+    credits: 50,
+  },
+  {
+    _id: 2,
+    name: "Pro Package",
+    icon: "/free-plan.svg",
+    price: 40,
+    credits: 100,
+  },
+  {
+    _id: 3,
+    name: "Premium Package",
+    icon: "/free-plan.svg",
+    price: 199,
+    credits: 2000,
+  },
+];

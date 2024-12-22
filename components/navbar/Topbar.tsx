@@ -8,12 +8,12 @@ import { navigation } from "@/constants";
 import Logo from "../logo";
 import ProfileModal from "./profile-modal";
 
-type User = {
-  userName: string,
-  tokens: number
+interface UserProps {
+  username: string,
+  currentTokens: number
 }
 
-const Topbar = ({user}:{user:User}) => {
+const Topbar = ({username,currentTokens}:UserProps) => {
   const [openNavigation, setOpenNavigation] = useState(false);
 
   return (
@@ -21,7 +21,7 @@ const Topbar = ({user}:{user:User}) => {
       <div className="px-6 py-3 bg-n-5 max-lg:border-b max-lg:border-neutral-500/40 lg:px-8 xl:px-12">
         <div className="flex justify-between items-center">
           <Logo/>
-          <Modal user={user}/>
+          <Modal username={username} currentTokens={currentTokens}/>
           <button
             className="ml-auto lg:hidden"
             onClick={() => setOpenNavigation(!openNavigation)}

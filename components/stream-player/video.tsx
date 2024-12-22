@@ -25,6 +25,7 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
     Track.Source.Camera,
     Track.Source.Microphone,
   ]).filter((track) => track.participant.identity === hostIdentity);
+  
   let content;
 
   if (!participant && connectionState === ConnectionState.Connected) {
@@ -32,10 +33,12 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   } else if (!participant || tracks.length === 0) {
     content = <LoadingVideo label={connectionState} />;
   } else {
-    content = <LiveVideo participant={participant} />;
+    content = <LiveVideo hostIdentity={hostIdentity}/>;
   }
 
-  return <div className="aspect-video group relative">{content}</div>;
+  return <div className="aspect-video group relative">
+    {content}
+    </div>;
 };
 
 export default Video;

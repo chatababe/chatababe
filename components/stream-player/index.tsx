@@ -75,7 +75,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
           <Video hostName={user.username} hostIdentity={hostIdentity} />
           <Header
             hostName={user.username}
-            hostIdentity={hostIdentity}
+            hostIdentity={user.id}
             viewerIdentity={identity}
             imageUrl={user.imageUrl}
             isFollowing={isFollowing}

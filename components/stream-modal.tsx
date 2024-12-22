@@ -17,30 +17,40 @@ import Hint from "@/components/hint";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { createStream} from "@/actions/stream";
+import { createStream } from "@/actions/stream";
 import { UploadDropzone } from "@/lib/uploadthing";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 
 enum Scope {
   PUBLIC = "public",
   PRIVATE = "private",
 }
+enum Type {
+  MALE = 'male',
+  FEMALE = 'female',
+  COUPLE = 'couple',
+  TRANS = 'trans'
+}
 
 const StreamModal = () => {
   const closeRef = useRef<ComponentRef<"button">>(null);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
+  const {user} = useUser(); 
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
   const [data, setData] = useState({
     name: "",
     goal: "",
     variant: Scope.PUBLIC,
+    type: Type.FEMALE
   });
 
   const onRemove = () => {
-    setThumbnailUrl(null)
+    setThumbnailUrl(null);
   };
-  const isPublic = data.variant === "public"
+  const isPublic = data.variant === "public";
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -50,17 +60,17 @@ const StreamModal = () => {
         name: data.name,
         goalText: data.goal,
         thumbnailUrl: thumbnailUrl,
-        isPublic: isPublic
+        type: data.type,
+        isPublic: isPublic,
       })
         .then(() => {
           toast.success("Stream created");
           closeRef?.current?.click();
-          redirect(`/`)
+          router.push(`/${user?.username}/`)
         })
-        .catch(() =>{
-            toast.error("Stream already exists");
-            closeRef?.current?.click();
-            redirect(`/`)
+        .catch(() => {
+          toast.error("Stream already exists");
+          closeRef?.current?.click();
         });
     });
   };
@@ -70,15 +80,12 @@ const StreamModal = () => {
       ...prevData,
       [e.target.name]: e.target.value,
     }));
-    console.log(data);
   };
 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="bg-transparent ml-auto">
-          Broadcast yourself
-        </button>
+        <button className="bg-transparent ml-auto">Broadcast yourself</button>
       </DialogTrigger>
       <DialogContent className="my-2 max-h-[80vh] overflow-y-scroll hidden-scrollbar">
         <DialogHeader>
@@ -157,31 +164,92 @@ const StreamModal = () => {
               className="ring-offset-n-5 focus-visible:outline-none focus-visible:ring-0 focus-visible:ring-offset-0 bg-n-4/30 font-medium"
             />
           </div>
-          <div className="flex items-center gap-4">
-            <div className="flex items-center space-x-2">
-              <Label>Public</Label>
-              <Input
-                name="variant"
-                disabled={isPending}
-                type="radio"
-                onChange={onChange}
-                value={Scope.PUBLIC}
-                className="w-4 h-4 checked:bg-primary-3"
-              />
-            </div>
-            <div className="flex items-center space-x-2">
-              <Label>Private</Label>
-              <Input
-                name="variant"
-                disabled={isPending}
-                type="radio"
-                onChange={onChange}
-                value={Scope.PRIVATE}
-                className="w-4 h-4 checked:bg-primary-3"
-              />
+          <div className="flex flex-col">
+            <Label className="mb-4 text-n-1">Stream Type</Label>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="type"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Type.FEMALE}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                  defaultChecked
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">Female</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="type"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Type.MALE}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">
+                  Male
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="type"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Type.COUPLE}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">
+                  Couple
+                </Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="type"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Type.TRANS}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">
+                  Trans
+                </Label>
+              </div>
             </div>
           </div>
-
+          <div className="flex flex-col">
+            <Label className="mb-4 text-n-1">Stream Scope</Label>
+            <div className="flex items-center gap-4">
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="variant"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Scope.PUBLIC}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                  defaultChecked
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">Public</Label>
+              </div>
+              <div className="flex items-center space-x-2">
+                <Input
+                  name="variant"
+                  disabled={isPending}
+                  type="radio"
+                  onChange={onChange}
+                  value={Scope.PRIVATE}
+                  className="w-4 h-4 checked:bg-primary-3 peer"
+                />
+                <Label className="text-n-2 peer-checked:text-n-1">
+                  Private
+                </Label>
+              </div>
+            </div>
+          </div>
           <div className="flex justify-between">
             <DialogClose ref={closeRef} asChild>
               <Button type="button" variant="ghost">

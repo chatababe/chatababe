@@ -22,6 +22,8 @@ export const updateStream = async (values: Partial<Stream>) => {
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
       name: values.name,
+      goalText: values.goalText,
+      type: values.type,
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
@@ -49,21 +51,28 @@ export const updateStream = async (values: Partial<Stream>) => {
 export const createStream = async (values: Partial<Stream>) => {
   try {
     const self = await getSelf();
-    const selfStream = await db.stream.findUnique({
-      where: {
-        userId: self.id,
-      },
-    });
-    console.log(!!selfStream)
 
-    if (!!selfStream) {
-      throw new Error("Stream already exists")
+    if (!self) {
+      throw new Error("User not authenticated");
     }
+
+    const selfStream = await db.stream.findUnique({
+      where: { userId: self.id },
+    });
+
+    if (selfStream) {
+      throw new Error("Stream already exists");
+    }
+     if (!values.name || values.name.trim() === "") {
+      throw new Error("Stream name is required");
+    }
+
 
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
-      name: values.name || "",
+      name: values.name.trim(),
       goalText: values.goalText,
+      type: values.type,
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
@@ -76,7 +85,7 @@ export const createStream = async (values: Partial<Stream>) => {
       },
       data: {
         stream: {
-          create: validData, // Correctly pass validData here
+          create: validData,
         },
       },
     });

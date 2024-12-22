@@ -19,7 +19,7 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider
-    signUpForceRedirectUrl={"/profile"}
+    signUpForceRedirectUrl={process.env.NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL}
     >
       <html lang="en">
         <body className={inter.className}>

@@ -12,17 +12,17 @@ const Navigation = () => {
 
   const routes = [
     {
-      label: "Stream",
+      label: "Profile",
       href: `/u/${user?.username}`,
       icon: Fullscreen,
     },
     {
-      label: "Profile",
-      href: `/u/${user?.username}/profile`,
+      label: "Stream",
+      href: `/u/${user?.username}/stream`,
       icon: User,
     },
     {
-      label: "Chat",
+      label: "Chat Control",
       href: `/u/${user?.username}/chat`,
       icon: MessageSquare,
     },

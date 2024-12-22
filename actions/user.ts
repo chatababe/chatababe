@@ -12,7 +12,6 @@ export const updateUser = async (values: Partial<User>) => {
   const validData = {
     firstName: values.firstName,
     lastName: values.lastName,
-    tokens: values.tokens,
   };
 
   const user = await db.user.update({
@@ -28,36 +27,60 @@ export const updateUser = async (values: Partial<User>) => {
 
 export const updateUserProfile = async (values: Partial<Profile>) => {
   const self = await getSelf();
-  console.log(self);
 
-  const existingProfile = await db.profile.findUnique({
-    where: { id: self.id },
-  });
+  if (!self) {
+    throw new Error("User not authenticated");
+  }
 
-  if (!existingProfile) {
-    // Redirect the user to the "Create Profile" page
-    console.log("User already exists");
-    return;
+  const { age, gender, location } = values;
+  if (!age || !gender || !location) {
+    throw new Error("Missing required fields: age, gender, or location");
   }
 
   const validData = {
-    age: values.age,
-    gender: values.gender,
+    age,
+    gender,
     bio: values.bio?.trim(),
-    location: values.location,
+    location,
     preference: values.preference,
   };
 
-  const profile = await db.profile.update({
-    where: { id: self.id },
-    data: {
+  const profile = await db.profile.upsert({
+    where: { userId: self.id },
+    create: {
+      userId: self.id,
+      ...validData,
+    },
+    update: {
       ...validData,
       updatedAt: new Date(),
-    }
+    },
   });
 
   revalidatePath(`/${self?.username}`);
   revalidatePath(`/u/${self?.username}`);
 
   return profile;
+};
+
+export const updateUserCredits = async () => {
+  const self = await getSelf();
+  if (!self) {
+    throw new Error("User not authenticated");
+  }
+  
+  const updatedUserTokens = await db.$transaction(async (prisma) => {
+    const totalTokens = await prisma.tokens.aggregate({
+      where: { userId: self.id },
+      _sum: { credits: true },
+    });
+    return prisma.user.update({
+      where: { id: self.id },
+      data: { currentTokens: totalTokens._sum.credits || 0 },
+    });
+  });
+
+  if (!updatedUserTokens) throw new Error("User tokens update failed");
+
+  return updatedUserTokens;
 };

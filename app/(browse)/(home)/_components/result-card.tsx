@@ -4,6 +4,7 @@ import Thumbnail, { ThumbnailSkeleton } from "@/components/thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserAvatarSkeleton } from "@/components/user-avatar";
 import { Timer, User } from "lucide-react";
+import UserIcon from "@/components/ui/user-icon";
 
 type User = {
   id: string;
@@ -20,10 +21,13 @@ interface ResultCardProps {
     isLive: boolean;
     name: string;
     thumbnailUrl: string | null;
+    goalText: string | null;
+    type: string  | null;
   };
 }
 
-const ResultCard = ({ data }: ResultCardProps) => {
+const ResultCard = async({ data }: ResultCardProps) => {
+
   return (
     <Link href={`/${data.user.username}`}>
       <div className="h-full w-full space-y-2 border border-n-3/40 rounded-lg pb-2">
@@ -38,15 +42,12 @@ const ResultCard = ({ data }: ResultCardProps) => {
             {data.user.username}
           </p>
           <div className="flex items-center gap-2 ml-auto">
-            {/* age */}
-            <p className="text-xs font-semibold text-n-2">19</p>
-            {/* gender */}
-            <User fill="pink" size={16} color="pink" />
+            <UserIcon type={data?.type || "female"}/>
           </div>
         </div>
         <div className="flex flex-col mx-2 py-1">
           {/* goal */}
-          <p className="text-[11px] text-n-1 leading-4 mb-2">my goal is to make 20,000 by the end of the stream</p>
+          <p className="text-[11px] text-n-1 leading-4 mb-2">{data?.goalText}</p>
           <div className="flex items-center">
             <Timer size={14} fill="#D9D9D9" color="#D9D9D9"/>
             <p className="text-[10px] text-n-3 ml-2"><span>8.2</span>hrs, <span>20001 </span>viewers</p>

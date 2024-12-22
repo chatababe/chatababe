@@ -15,7 +15,7 @@ model User {
   externalUserId String  @unique
   firstName      String? @db.Text
   lastName       String? @db.Text
-  tokens         Int     @default(0)
+  currentTokens  Int     @default(0)
 
   // Relationships
   following  Follow[] @relation("Following")
@@ -24,6 +24,7 @@ model User {
   blockedBy  Block[]  @relation("BlockedBy")
   stream     Stream?
   profile    Profile?
+  tokens     Tokens[] @relation("tokens")
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -39,7 +40,7 @@ model Profile {
   location   String  @db.Text
   preference String? @db.Text
   gender     String
-  socials    Json? 
+  socials    Json?
   photos     Json?
   videos     Json?
 
@@ -52,6 +53,7 @@ model Stream {
   name         String  @db.Text
   thumbnailUrl String? @db.Text
   goalText     String? @db.Text
+  type         String? @db.Text
 
   ingressId String? @unique
   serverUrl String? @db.Text
@@ -108,4 +110,20 @@ model Block {
   @@unique([blockerId, blockedId])
   @@index([blockerId])
   @@index([blockedId])
+}
+
+model Tokens {
+  id       String  @id @default(uuid())
+  userId   String  @unique
+  stripeId String? @unique
+  amount   Float?  @default(0)
+  plan     String?
+  credits  Int
+
+  user User @relation(name: "tokens", fields: [userId], references: [id], onDelete: Cascade)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([userId, stripeId])
 }

@@ -6,9 +6,15 @@ import Select from 'react-select';
 
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { redirect } from "next/navigation";
-import { updateUserProfile } from "@/actions/user";
+import { useRouter } from "next/navigation";
+import {updateUserProfile } from "@/actions/user";
 import { Button } from "@/components/ui/button";
+
+
+type LocationOption = {
+  value: string;
+  label: string;
+};
 
 const LOCATIONS = [
   { value: 'us', label: 'United States' },
@@ -40,6 +46,7 @@ enum Gender {
 const Page = () => {
   const [isPending, startTransition] = useTransition();
   const [formErrors, setFormErrors] = useState<{[key: string]: string}>({});
+  const router = useRouter();
 
   const [data, setData] = useState({
     age: 18,
@@ -84,7 +91,7 @@ const Page = () => {
       })
         .then(() => {
           toast.success("User profile created successfully");
-          redirect(`/`);
+          router.push('/');
         })
         .catch((error) => {
           console.error(error);
@@ -104,6 +111,7 @@ const Page = () => {
       ...prevData,
       [name]: processedValue,
     }));
+    console.log(data);
     
     if (formErrors[name]) {
       setFormErrors(prev => {
@@ -114,7 +122,7 @@ const Page = () => {
     }
   };
 
-  const onLocationChange = (selectedOption: any) => {
+  const onLocationChange = (selectedOption: LocationOption | null) => {
     setData(prev => ({
       ...prev,
       location: selectedOption ? selectedOption.value : '',
@@ -159,6 +167,7 @@ const Page = () => {
             placeholder="Select your location"
             className="basic-single"
             classNamePrefix="select"
+            instanceId="location-select"
           />
         </div>
 

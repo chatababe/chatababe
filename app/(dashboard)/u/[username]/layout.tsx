@@ -25,7 +25,7 @@ const CreatorLayout = async ({ params, children }: CreatorLayoutProps) => {
   return (
     <>
       <Header/>
-      <div className="flex">
+      <div className="flex relative">
         <Sidebar />
         <Container>{children}</Container>
       </div>

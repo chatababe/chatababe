@@ -1,20 +1,22 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { Participant, Track } from "livekit-client";
-import { useTracks } from "@livekit/components-react";
+import { Track } from "livekit-client";
+import { useLocalParticipant, useTracks } from "@livekit/components-react";
 import { useEventListener } from "usehooks-ts";
 
 import VolumeControl from "./volume-control";
 import FullscreenControl from "./fullscreen-control";
 
 interface LiveVideoProps {
-  participant: Participant;
+  hostIdentity: string;
 }
 
-const LiveVideo = ({ participant }: LiveVideoProps) => {
+const LiveVideo = ({ hostIdentity }: LiveVideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  const localParticipant = useLocalParticipant();
+  const local = localParticipant.localParticipant
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [volume, setVolume] = useState(0);
@@ -56,24 +58,22 @@ const LiveVideo = ({ participant }: LiveVideoProps) => {
   };
 
   useEventListener("fullscreenchange", handleFullscreenChange, wrapperRef);
+  console.log(videoRef.current);
 
-  useTracks([Track.Source.Camera, Track.Source.Microphone])
-    .filter((track) => track.participant.identity === participant.identity)
+  const tracks = useTracks([Track.Source.Camera, Track.Source.Microphone]);
+  tracks
+    .filter((track) => track.participant.identity === hostIdentity)
     .forEach((track) => {
-      if (videoRef.current) {
-        track.publication.track?.attach(videoRef.current);
+      if (local.identity === hostIdentity) {
+        if (videoRef.current) {
+          track.publication.track?.attach(videoRef.current);
+        }
       }
     });
 
   return (
-    <div
-      ref={wrapperRef}
-      className="relative h-full flex"
-    >
-      <video
-        ref={videoRef}
-        width="100%"
-      />
+    <div ref={wrapperRef} className="relative h-full flex">
+      <video ref={videoRef} width="100%" />
       <div className="absolute top-0 h-full w-full opacity-0 hover:opacity-100 hover:transition-all">
         <div className="absolute bottom-0 flex h-10 w-full items-center justify-between bg-n-1/40 px-4">
           <VolumeControl
