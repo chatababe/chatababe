@@ -6,13 +6,12 @@ import Header from "@/components/navbar";
 import Footer from "@/components/footer";
 
 interface SearchPageProps {
-  searchParams: {
-    term?: string;
-  };
+  searchParams: Promise<{ term?: string }>;
 }
 
-const SearchPage = ({ searchParams }: SearchPageProps) => {
-  if (!searchParams.term) {
+const SearchPage = async({ searchParams }: SearchPageProps) => {
+  const resolvedSearchParams = await searchParams;
+  if (!resolvedSearchParams.term) {
     redirect("/");
   }
 
@@ -20,7 +19,7 @@ const SearchPage = ({ searchParams }: SearchPageProps) => {
     <div className="h-full p-8 max-w-screen-2xl mx-auto">
       <Header />
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results term={searchParams.term} />
+        <Results term={resolvedSearchParams.term} />
       </Suspense>
       <Footer />
     </div>

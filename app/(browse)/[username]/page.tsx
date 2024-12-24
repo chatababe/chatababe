@@ -7,10 +7,12 @@ import StreamPlayer from "@/components/stream-player";
 import Footer from "@/components/footer";
 import Header from "@/components/navbar";
 
-interface UserPageProps {
-  params: {
-    username: string;
-  };
+interface PageProps {
+  params: Promise<{ username: string }>;
+}
+
+interface UserPageProps extends PageProps {
+  params: Promise<{ username: string }>;
 }
 
 const UserPage = async ({ params }: UserPageProps) => {

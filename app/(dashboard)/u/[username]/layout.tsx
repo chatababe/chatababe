@@ -8,14 +8,13 @@ import Header from "@/components/navbar";
 import Footer from "@/components/footer";
 
 interface CreatorLayoutProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
   children: React.ReactNode;
 }
-
 const CreatorLayout = async ({ params, children }: CreatorLayoutProps) => {
-  const {username} = await params;
+  const { username } = await params; 
   const self = await getSelfByUsername(username);
 
   if (!self) {

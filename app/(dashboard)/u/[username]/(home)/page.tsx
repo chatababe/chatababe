@@ -5,9 +5,9 @@ import Image from "next/image";
 import ProfileModal from "../_components/profile-modal";
 
 interface ProfilePageProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 }
 
 const Profile = async ({ params }: ProfilePageProps) => {

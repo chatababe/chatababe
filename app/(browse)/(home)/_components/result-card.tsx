@@ -3,7 +3,7 @@ import Link from "next/link";
 import Thumbnail, { ThumbnailSkeleton } from "@/components/thumbnail";
 import { Skeleton } from "@/components/ui/skeleton";
 import { UserAvatarSkeleton } from "@/components/user-avatar";
-import { Timer, User } from "lucide-react";
+import { User } from "lucide-react";
 import UserIcon from "@/components/ui/user-icon";
 
 type User = {
@@ -48,10 +48,6 @@ const ResultCard = async({ data }: ResultCardProps) => {
         <div className="flex flex-col mx-2 py-1">
           {/* goal */}
           <p className="text-[11px] text-n-1 leading-4 mb-2">{data?.goalText}</p>
-          <div className="flex items-center">
-            <Timer size={14} fill="#D9D9D9" color="#D9D9D9"/>
-            <p className="text-[10px] text-n-3 ml-2"><span>8.2</span>hrs, <span>20001 </span>viewers</p>
-          </div>
         </div>
       </div>
     </Link>

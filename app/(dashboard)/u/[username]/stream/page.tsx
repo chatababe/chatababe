@@ -3,13 +3,13 @@ import StreamPlayer from "@/components/stream-player";
 import { currentUser } from "@clerk/nextjs/server";
 
 interface CreatorPageProps {
-  params: {
+  params: Promise<{
     username: string;
-  };
+  }>;
 }
 
 const CreatorPage = async ({ params }: CreatorPageProps) => {
-  const {username} = await params;
+  const { username } = await params;
   const externalUser = await currentUser();
   const user = await getUserByUsername(username);
 

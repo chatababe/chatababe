@@ -57,7 +57,7 @@ const LiveVideo = ({ hostIdentity }: LiveVideoProps) => {
     setIsFullscreen(isCurrentlyFullscreen);
   };
 
-  useEventListener("fullscreenchange", handleFullscreenChange, wrapperRef);
+  useEventListener("fullscreenchange", handleFullscreenChange,{ current: document });
 
   const tracks = useTracks([Track.Source.Camera, Track.Source.Microphone]);
   useEffect(() => {
