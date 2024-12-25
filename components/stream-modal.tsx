@@ -37,6 +37,7 @@ const StreamModal = () => {
   const closeRef = useRef<ComponentRef<"button">>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
+  //use user causes errors
   const {user} = useUser(); 
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -81,6 +82,10 @@ const StreamModal = () => {
       [e.target.name]: e.target.value,
     }));
   };
+
+  if(!user){
+    return null;
+  }
 
   return (
     <Dialog>

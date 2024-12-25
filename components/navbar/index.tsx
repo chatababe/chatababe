@@ -1,6 +1,5 @@
 import Topbar from "./Topbar";
 import Navbar from "./Navbar";
-import Categorybar from "./category-bar";
 import { currentUser } from "@clerk/nextjs/server";
 import { getUserByUsername } from "@/lib/user-service";
 
@@ -12,7 +11,6 @@ const Header = async () => {
       <header className="w-full bg-white z-50 mb-2">
         <Topbar username="Anonymous" currentTokens={0} />
         <Navbar />
-        <Categorybar />
       </header>
     );
   }
