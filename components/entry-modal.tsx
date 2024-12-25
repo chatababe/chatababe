@@ -34,11 +34,8 @@ const AgeConsentDialog = () => {
   const handleReject = () => {
     toast.error("You must be of legal age to enter this site.");
     const previousTab = sessionStorage.getItem("previousTab");
-    if (previousTab) {
-      window.location.href = previousTab;
-    } else {
-      window.location.href = "https://google.com";
-    }
+    console.log(previousTab);
+    window.location.href = "https://google.com";
   };
   const handleDialogClose = (open: boolean) => {
     if (!open) {
