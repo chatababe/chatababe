@@ -14,7 +14,7 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
    const { collapsed } = useFilterSidebar((state) => state);
 
   return (
-    <div className={cn("w-[22rem] p-6 bg-n-5 space-y-8" ,collapsed && "hidden")}>
+    <div className={cn("w-[22rem] p-6 bg-n-5 space-y-8 max-lg:hidden" ,collapsed && "hidden")}>
       <section>
         <div className="flex items-center gap-2 mb-4">
           <svg className="w-6 h-6 text-gray-700" fill="none" strokeWidth="1.5" stroke="currentColor" viewBox="0 0 24 24">
