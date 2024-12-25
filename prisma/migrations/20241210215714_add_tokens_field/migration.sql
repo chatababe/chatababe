@@ -1,2 +1,0 @@
--- AlterTable
-ALTER TABLE `user` ADD COLUMN `tokens` INTEGER NOT NULL DEFAULT 0;
