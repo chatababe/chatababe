@@ -3,10 +3,11 @@
 import { useState } from "react";
 import Modal from "./modal";
 import Link from "next/link";
-import { Menu} from "lucide-react";
+import { Menu, UserCircle} from "lucide-react";
 import { navigation } from "@/constants";
 import Logo from "../logo";
-import ProfileModal from "./profile-modal";
+import {SignUpButton } from "@clerk/nextjs";
+import StreamModal from "../stream-modal";
 
 interface UserProps {
   username: string,
@@ -28,30 +29,29 @@ const Topbar = ({username,currentTokens}:UserProps) => {
           >
             <Menu size={28} color="#4b5563" />
           </button>
-          <div className="lg:hidden">
-            <ProfileModal/>
-          </div>
+          <Link href={`/u/${username}`} className="ml-4 lg:hidden" >
+          <UserCircle size={28} color="#4b5563"/>
+          </Link>
         </div>
       </div>
       {openNavigation && (
-        <div className="fixed top-[5.4rem] left-0 bottom-0 w-2/5 bg-primary-1 border-r border-r-n-3/40 lg:hidden">
-          <div className=" h-full flex flex-col px-8  py-12 gap-4">
+        <div className="fixed top-[5.4rem] left-0 bottom-0 w-full py-12 bg-primary-1 border-r border-r-n-3/40 z-50 lg:hidden">
+          <div className=" h-full flex flex-col space-y-4 items-center px-8 py-12 gap-4">
             {navigation.map((item) => (
               <Link
                 key={item.id}
                 href={item.url}
-                className="text-n-3 text-sm font-poppins font-medium uppercase transition-colors hover:text-n-2"
+                className="link-text"
               >
                 {item.title}
               </Link>
             ))}
-            <div className=" mt-4 py-2 px-4 bg-s-2 rounded-md flex flex-col items-center justify-center">
-              <Link
-                href="/"
-                className="text-center text-n-5 text-sm font-poppins uppercase px-5"
+              <StreamModal />
+            <div className=" mt-4 py-2 px-4 bg-s-2 rounded-md min-w-[10rem] flex flex-col items-center justify-center">
+              <SignUpButton
               >
-                sign up
-              </Link>
+                <p className="font-semibold text-lg text-n-5">sign up</p>
+              </SignUpButton>
             </div>
           </div>
         </div>

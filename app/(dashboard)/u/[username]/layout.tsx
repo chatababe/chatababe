@@ -1,4 +1,4 @@
-import { redirect } from "next/navigation";
+import { notFound} from "next/navigation";
 
 import { getSelfByUsername } from "@/lib/auth-service";
 
@@ -18,7 +18,7 @@ const CreatorLayout = async ({ params, children }: CreatorLayoutProps) => {
   const self = await getSelfByUsername(username);
 
   if (!self) {
-    redirect("/");
+    notFound();
   }
 
   return (

@@ -53,3 +53,8 @@ body,
     @apply bg-primary-1;
   }
 }
+@layer components{
+  .link-text{
+    @apply  text-n-3 text-sm font-poppins font-medium uppercase transition-colors hover:text-n-2/90 hover:font-semibold;
+  }
+} 

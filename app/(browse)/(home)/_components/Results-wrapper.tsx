@@ -1,13 +1,18 @@
 import { Suspense } from "react";
 
 import Results, { ResultsSkeleton } from "./results";
+import { useCategoryNavbar } from "@/store/use-category-navbar";
 
-export default function ResultsWrapper() {
+const ResultsWrapper = () => {
+  const {selectedCategory} = useCategoryNavbar();
+  console.log(selectedCategory);
   return (
     <div className="max-w-screen-2xl">
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results/>
+        <Results category={selectedCategory} />
       </Suspense>
     </div>
   );
 }
+
+export default ResultsWrapper;

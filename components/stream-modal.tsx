@@ -37,7 +37,7 @@ const StreamModal = () => {
   const closeRef = useRef<ComponentRef<"button">>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
-  //use user causes errors
+
   const {user} = useUser(); 
 
   const [thumbnailUrl, setThumbnailUrl] = useState<string | null>(null);
@@ -82,15 +82,10 @@ const StreamModal = () => {
       [e.target.name]: e.target.value,
     }));
   };
-
-  if(!user){
-    return null;
-  }
-
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="bg-transparent ml-auto">Broadcast yourself</button>
+        <button className="bg-transparent lg:ml-auto max-lg:link-text" disabled={!user}>Broadcast yourself</button>
       </DialogTrigger>
       <DialogContent className="my-2 max-h-[80vh] overflow-y-scroll hidden-scrollbar">
         <DialogHeader>

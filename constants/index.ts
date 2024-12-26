@@ -28,13 +28,7 @@ export const navigation = [
     id: 5,
     title: "Merch",
     url: "/merch",
-  },
-  {
-    id: 6,
-    title: "Broadcast yourself",
-    url: "/broadcast",
-    isMobileOnly: true,
-  },
+  }
 ];
 export const categories = [
   {

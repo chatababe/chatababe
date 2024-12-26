@@ -1,28 +1,29 @@
 import React from "react";
 import Link from "next/link";
-import { Lobster } from "next/font/google";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
-
-const lobster = Lobster({
-  subsets: ["latin"],
-  weight: ["400"],
-});
 
 function Logo() {
   return (
     <Link
       className={cn(
-        "hover:no-underline flex flex-col items-center xl:mr-8 lg:items-start",
-        lobster.className
+        "hover:no-underline flex flex-col items-center xl:mr-8 lg:items-start"
       )}
       href="/"
     >
       <Image
-        src='/assets/icons/logo.svg'
+        src="/assets/icons/logo.svg"
         alt="logo"
         width={120}
         height={120}
+        className="max-lg:hidden"
+      />
+      <Image
+        src="/assets/images/logo-small.jpg"
+        alt="logo"
+        width={80}
+        height={80}
+        className="lg:hidden"
       />
     </Link>
   );

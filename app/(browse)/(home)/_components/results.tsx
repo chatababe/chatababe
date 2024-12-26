@@ -3,11 +3,12 @@ import ResultCard, { ResultCardSkeleton } from "./result-card";
 import { getStreams } from "@/lib/feed-service";
 import Logo from "@/components/logo";
 
-const Results = async () => {
+const Results = async ({category}:{category:string}) => {
   const data = await getStreams();
-
+  const filteredData = category === "Featured" ? data : data.filter((item) => item.type === category)
+  console.log(filteredData);
   return (
-    <div>
+    <div className="min-h-screen">
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
           <Logo/>

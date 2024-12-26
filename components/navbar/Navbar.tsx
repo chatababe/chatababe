@@ -18,8 +18,7 @@ const Navbar = async () => {
               key={item.id}
               href={item.url}
               className={cn(
-                "text-n-5 text-xs font-medium font-poppins uppercase hover:underline",
-                item.isMobileOnly ? "hidden" : "block"
+                "text-n-5 text-xs font-medium font-poppins uppercase hover:underline"
               )}
             >
               {item.title}
