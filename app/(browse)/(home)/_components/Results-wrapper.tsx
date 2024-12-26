@@ -5,7 +5,7 @@ import { useCategoryNavbar } from "@/store/use-category-navbar";
 
 const ResultsWrapper = () => {
   const {selectedCategory} = useCategoryNavbar();
-  console.log(selectedCategory);
+  
   return (
     <div className="max-w-screen-2xl">
       <Suspense fallback={<ResultsSkeleton />}>

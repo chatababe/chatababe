@@ -6,7 +6,7 @@ export default function RootPage() {
   return (
     <div className="h-full">
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results/>
+        <Results category="Featured"/>
       </Suspense>
     </div>
   );
