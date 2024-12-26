@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useCreatorSidebar } from "@/store/use-creator-sidebar";
+import { useUser } from "@clerk/nextjs";
 
 interface NavItemProps {
   icon: LucideIcon;
@@ -17,6 +18,7 @@ interface NavItemProps {
 
 const NavItem = ({ icon: Icon, label, href, isActive }: NavItemProps) => {
   const { collapsed } = useCreatorSidebar((state) => state);
+  const user = useUser();
 
   return (
     <Button
@@ -27,6 +29,7 @@ const NavItem = ({ icon: Icon, label, href, isActive }: NavItemProps) => {
         collapsed ? "justify-center" : "justify-start",
         isActive && "bg-primary-3"
       )}
+      disabled={!user}
     >
       <Link href={href}>
         <div className="flex items-center gap-x-4 text-n-2">

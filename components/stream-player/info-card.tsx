@@ -26,7 +26,7 @@ const InfoCard = ({
   if (!isHost) return null;
 
   return (
-    <div className="px-4 lg:px-6">
+    <div className=" py-4 pr-4">
       <div className="rounded-xl bg-n-5 border border-n-4">
         <div className="flex items-center gap-x-2.5 p-4">
           <div className="rounded-md border border-n-4 text-n-1 p-2 h-auto w-auto">

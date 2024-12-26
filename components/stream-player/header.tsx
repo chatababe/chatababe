@@ -42,7 +42,7 @@ const Header = ({
   const isHost = viewerIdentity === hostAsViewer;
 
   return (
-    <div className="flex flex-col lg:flex-row gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2">
+    <div className="flex  gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2">
       <div className="flex items-center gap-x-3">
         <UserAvatar
           imageUrl={imageUrl}
@@ -79,7 +79,7 @@ const Header = ({
           <TipModal />
         </div>
         {collapsed && (
-          <div className="hidden lg:block z-50 w-full ">
+          <div className="block z-50 w-full ">
             <ChatToggle text="show chat" />
           </div>
         )}

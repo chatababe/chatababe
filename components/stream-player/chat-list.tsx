@@ -14,8 +14,8 @@ interface ChatListProps {
 const ChatList = ({ messages, isHidden }: ChatListProps) => {
   if (isHidden || !messages || messages.length === 0) {
     return (
-      <div className="flex flex-1 items-center justify-center">
-        <p className="text-sm text-muted-foreground">
+      <div className="flex flex-1 items-center justify-center max-lg:min-h-[10rem]">
+        <p className="text-sm text-n-5">
           {isHidden ? "Chat is disabled" : "Welcome to the chat!"}
         </p>
       </div>

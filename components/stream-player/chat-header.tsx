@@ -8,7 +8,7 @@ import VariantToggle from "./variant-toggle";
 const ChatHeader = () => {
   return (
     <div className="relative p-3 border-y">
-      <div className="absolute left-2 top-2 hidden lg:block">
+      <div className="absolute left-2 top-2">
         <ChatToggle />
       </div>
       <p className="font-semibold text-center">Stream Chat</p>

@@ -33,7 +33,7 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   } else if (!participant || tracks.length === 0) {
     content = <LoadingVideo label={connectionState} />;
   } else {
-    content = <LiveVideo hostIdentity={hostIdentity}/>;
+    content = <LiveVideo participant={participant}/>;
   }
 
   return <div className="aspect-video group relative">

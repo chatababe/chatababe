@@ -56,8 +56,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
     return <StreamPlayerSkeleton />;
   }
   
-  const isHost = identity.startsWith("host");
-  const hostIdentity = `host-${user.id}`;
+  const isHost = name === "host";
 
   return (
     <>
@@ -71,8 +70,8 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
           collapsed && "lg:grid-cols-2 xl:grid-cols-2 2xl:grid-cols-2"
         )}
       >
-        <div className="space-y-4 col-span-3 lg:col-span-3 xl:col-span-3 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-4 border-l  border-b ">
-          <Video hostName={user.username} hostIdentity={hostIdentity} />
+        <div className="space-y-4 col-span-full lg:col-span-3 xl:col-span-3 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-4 border-l  border-b ">
+          <Video hostName={user.username} hostIdentity={user.id} />
           <Header
             hostName={user.username}
             hostIdentity={user.id}
@@ -82,11 +81,11 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
             name={stream.name}
           />
         </div>
-        <div className={cn("col-span-1", collapsed && "hidden")}>
+        <div className={cn("col-span-1 max-lg:col-span-full", collapsed && "hidden")}>
           <Chat
             viewerName={name}
             hostName={user.username}
-            hostIdentity={hostIdentity}
+            hostIdentity={user.id}
             isFollowing={isFollowing}
             isChatEnabled={stream.isChatEnabled}
             isChatDelayed={stream.isChatDelayed}
@@ -95,13 +94,13 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
         </div>
         <div className="col-span-full">
           <InfoCard
-            hostIdentity={hostIdentity}
+            hostIdentity={user.id}
             viewerIdentity={identity}
             name={stream.name}
             thumbnailUrl={stream.thumbnailUrl}
           />
           <AboutCard
-            hostIdentity={hostIdentity}
+            hostIdentity={user.id}
             viewerIdentity={identity}
             hostProfile={user.profile}
             followedByCount={user._count.followedBy}

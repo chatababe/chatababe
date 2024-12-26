@@ -2,7 +2,6 @@
 
 import React from "react";
 import { MessageCircle, Bell, UserCircle } from "lucide-react";
-import {SignOutButton } from "@clerk/nextjs";
 import TokenModal from "../tokens-modal";
 
 interface UserProps {
@@ -33,13 +32,11 @@ const Modal = ({ username, currentTokens }: UserProps) => {
               Status:{" "}
               <span className="text-sm text-n-2 font-bold">{username}</span>
             </p>
-            {username !== "Anonymous" && (
-              <SignOutButton>
-                <p className="text-xs text-s-3 ml-auto font-medium cursor-pointer">
-                  {"(log out)"}
-                </p>
-              </SignOutButton>
-            )}
+            <>
+              <p className="text-xs text-s-3 ml-auto font-medium cursor-pointer">
+                {"(log out)"}
+              </p>
+            </>
           </div>
           <div className="flex items-center w-full">
             <p className="text-xs text-n-2 font-semibold">

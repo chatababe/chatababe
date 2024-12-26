@@ -23,7 +23,7 @@ const ChatToggle = ({text}:{text?:string}) => {
     <Hint label={label} side="left" asChild>
       <Button onClick={onToggle} variant={!!text ? "default" :"ghost"} className="h-auto p-2">
         <Icon className={cn("h-4 w-4",collapsed && "mr-2")} />
-        {text}
+        <p className="max-lg:hidden">{text}</p>
       </Button>
     </Hint>
   );
