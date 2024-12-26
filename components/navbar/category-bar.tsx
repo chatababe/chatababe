@@ -75,7 +75,7 @@ export const CategoryContainer = () => {
             className={cn(
               "p-2 px-3 rounded-md border border-n-4 flex items-center",
               selectedCategory === item.title &&
-                "bg-primary-2 hover:bg-primary-2"
+                "bg-primary-3 hover:bg-primary-3"
             )}
             key={item.id}
             onClick={() => setCategory(item.title)}

@@ -42,7 +42,7 @@ const Header = ({
   const isHost = viewerIdentity === hostAsViewer;
 
   return (
-    <div className="flex  gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2">
+    <div className="flex gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2 max-md:flex-col">
       <div className="flex items-center gap-x-3">
         <UserAvatar
           imageUrl={imageUrl}
@@ -70,7 +70,7 @@ const Header = ({
         </div>
       </div>
       <div className="flex space-x-2">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 max-md:flex-row max-md:w-full max-md:justify-between">
           <Actions
             isFollowing={isFollowing}
             hostIdentity={hostIdentity}

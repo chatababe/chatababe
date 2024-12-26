@@ -35,7 +35,7 @@ const Topbar = ({username,currentTokens}:UserProps) => {
         </div>
       </div>
       {openNavigation && (
-        <div className="fixed top-[5.4rem] left-0 bottom-0 w-full py-12 bg-primary-1 border-r border-r-n-3/40 z-50 lg:hidden">
+        <div className="fixed top-[5.4rem] left-0 bottom-0 w-full py-12 bg-primary-1 border-r border-r-n-3/40 z-[100] lg:hidden">
           <div className=" h-full flex flex-col space-y-4 items-center px-8 py-12 gap-4">
             {navigation.map((item) => (
               <Link
