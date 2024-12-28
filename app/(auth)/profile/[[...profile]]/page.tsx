@@ -81,7 +81,6 @@ const ModelProfileSetup = () => {
       ...prev,
       [name]: value,
     }));
-    console.log(profileData);
   };
   const handleRadioChange = (field: keyof ProfileData, value: string) => {
     setProfileData((prev) => ({
@@ -125,7 +124,7 @@ const ModelProfileSetup = () => {
         }),
         updateUserProfile({
           fullName: profileData.fullName,
-          age: profileData.age,
+          age: parseInt(`${profileData.age}`),
           gender: profileData.gender,
           bio: profileData.bio,
           preference: profileData.preference,
