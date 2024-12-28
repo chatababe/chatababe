@@ -28,7 +28,7 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
         <Button
           variant="default"
           size="lg"
-          onClick={redirect("/model-profile")}
+          onClick={()=>redirect("/model-profile")}
         >
           Become a model
         </Button>
