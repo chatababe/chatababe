@@ -5,7 +5,7 @@ import { JsonValue } from "@prisma/client/runtime/library";
 type CustomProfile = {
   bio: string | null;
   age: number;
-  location: string;
+  location: string | null;
   preference: string | null;
   gender: string;
   socials: JsonValue;

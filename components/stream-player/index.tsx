@@ -25,7 +25,7 @@ type CustomStream = {
 type CustomProfile = {
   bio: string | null;
   age: number;
-  location: string;
+  location: string | null;
   preference: string | null;
   gender: string;
   socials: JsonValue;
