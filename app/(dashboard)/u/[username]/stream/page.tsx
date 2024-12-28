@@ -15,16 +15,16 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
   const user = await getUserByUsername(username);
 
   if (!user || user.externalUserId !== externalUser?.id || !user.stream) {
-    return <StreamModal stream={null}/>
+    return (
+      <div className="h-full flex items-center justify-center">
+        <StreamModal stream={null} />
+      </div>
+    );
   }
 
   return (
     <div className="h-full">
-      <StreamPlayer
-        user={user}
-        stream={user.stream}
-        isFollowing
-      />
+      <StreamPlayer user={user} stream={user.stream} isFollowing />
     </div>
   );
 };
