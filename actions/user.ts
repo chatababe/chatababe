@@ -43,7 +43,7 @@ export const updateUserProfile = async (values: Partial<Profile>) => {
     age,
     gender,
     bio: values.bio?.trim(),
-    location,
+    location:values.location,
     preference: values.preference,
     interests: values.intrests,
     socials: values.socials
