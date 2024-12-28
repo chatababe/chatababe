@@ -8,13 +8,11 @@ generator client {
 }
 
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  username       String   @unique
+  id             String @id @default(auto()) @map("_id") @db.ObjectId
+  username       String @unique
   imageUrl       String
-  externalUserId String   @unique
-  firstName      String?
-  lastName       String?
-  currentTokens  Int      @default(0)
+  externalUserId String @unique
+  currentTokens  Int    @default(0)
 
   following  Follow[] @relation("Following")
   followedBy Follow[] @relation("FollowedBy")
@@ -29,15 +27,17 @@ model User {
 }
 
 model Profile {
-  id     String @id @default(auto()) @map("_id") @db.ObjectId
-  userId String @unique @db.ObjectId
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-  bio    String?
+  id       String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId   String  @unique @db.ObjectId
+  user     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName String?
+  bio      String?
 
   age        Int
   location   String
   preference String?
   gender     String
+  intrests   String[]
   socials    Json?
   photos     Json?
   videos     Json?
@@ -47,11 +47,13 @@ model Profile {
 }
 
 model Stream {
-  id           String  @id @default(auto()) @map("_id") @db.ObjectId
-  name         String
-  thumbnailUrl String?
-  goalText     String?
-  type         String?
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  thumbnailUrl  String?
+  goalText      String?
+  type          String?
+  approvalImage String?
+  tags          String[]
 
   ingressId String? @unique
   serverUrl String?
@@ -62,6 +64,7 @@ model Stream {
   isChatDelayed       Boolean @default(false)
   isChatFollowersOnly Boolean @default(false)
   isPublic            Boolean @default(true)
+  approved            Boolean @default(false)
 
   userId String @unique @db.ObjectId
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)

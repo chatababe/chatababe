@@ -11,10 +11,11 @@ import StreamModal from "../stream-modal";
 
 interface UserProps {
   username: string,
-  currentTokens: number
+  currentTokens: number,
+  stream:Stream|undefined|null
 }
 
-const Topbar = ({username,currentTokens}:UserProps) => {
+const Topbar = ({stream, username,currentTokens}:UserProps) => {
   const [openNavigation, setOpenNavigation] = useState(false);
 
   return (
@@ -46,7 +47,7 @@ const Topbar = ({username,currentTokens}:UserProps) => {
                 {item.title}
               </Link>
             ))}
-              <StreamModal />
+              <StreamModal stream={stream} />
             <div className=" mt-4 py-2 px-4 bg-s-2 rounded-md min-w-[10rem] flex flex-col items-center justify-center">
               <SignUpButton
               >

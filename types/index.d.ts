@@ -16,3 +16,14 @@ declare type LocationOption = {
   value: string;
   label: string;
 };
+
+interface Stream {
+  id: string;
+  isLive: boolean;
+  approved: boolean;
+  isChatDelayed: boolean;
+  isChatEnabled: boolean;
+  isChatFollowersOnly: boolean;
+  thumbnailUrl: string | null;
+  name: string;
+}

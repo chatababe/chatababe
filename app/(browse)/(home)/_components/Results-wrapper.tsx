@@ -1,18 +1,25 @@
-import { Suspense } from "react";
+import React, { Suspense } from 'react';
+import { ResultsSkeleton } from './results';
 
-import Results, { ResultsSkeleton } from "./results";
-import { useCategoryNavbar } from "@/store/use-category-navbar";
-
-const ResultsWrapper = () => {
-  const {selectedCategory} = useCategoryNavbar();
-  
-  return (
-    <div className="max-w-screen-2xl">
-      <Suspense fallback={<ResultsSkeleton />}>
-        <Results category={selectedCategory} />
-      </Suspense>
-    </div>
-  );
+type ResultsWrapperProps = {
+  category?: string;
+  children: React.ReactNode;
 }
+
+
+const ResultsWrapper = ({ category, children }: ResultsWrapperProps) => {
+  return (
+    <Suspense fallback={<ResultsSkeleton />}>
+      {React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+          return React.cloneElement(child as React.ReactElement<{ category?: string }>, { 
+            category 
+          });
+        }
+        return child;
+      })}
+    </Suspense>
+  );
+};
 
 export default ResultsWrapper;

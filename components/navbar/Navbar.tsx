@@ -6,9 +6,12 @@ import { Button } from "../ui/button";
 import { AppWindowIcon } from "lucide-react";
 import { SignUpButton} from "@clerk/nextjs";
 import { currentUser } from "@clerk/nextjs/server";
+import { getUserByUsername } from "@/lib/user-service";
 
 const Navbar = async () => {
-  const user = await currentUser();
+  const self = await currentUser();
+  const user = await getUserByUsername(self?.username || "");
+
   return (
     <div className="bg-primary-2 max-lg:hidden">
       <div className="flex gap-4 justify-between items-center py-4 max-h-[3rem]">
@@ -28,9 +31,9 @@ const Navbar = async () => {
 
         <div className="h-[3rem] relative flex items-center text-n-5">
           <div className="mr-3">
-            <StreamModal />
+            <StreamModal stream={user?.stream}/>
           </div>
-          {!!user ? (
+          {!!self ? (
             <div className="flex items-center gap-x-4">
               <Button
                 size="sm"
@@ -38,7 +41,7 @@ const Navbar = async () => {
                 className="text-n-5/90 hover:text-n-5"
                 asChild
               >
-                <Link href={`/u/${user.username}`}>
+                <Link href={`/u/${self.username}`}>
                   <AppWindowIcon className="h-5 w-5 lg:mr-2" />
                   <span className="hidden lg:block uppercase">Dashboard</span>
                 </Link>

@@ -30,6 +30,8 @@ body,
       --error: #FF4500; /* Red-orange */
       --on-error: #FFFFFF; /* White on errors */
       --outline: #B0BEC5; /* Light Gray */
+      --card: 0 0% 100%;
+      --card-foreground: 222.2 84% 4.9%;
     }
   
     .dark {
@@ -45,6 +47,8 @@ body,
       --error: #FF6347; /* Tomato */
       --on-error: #0D1117; /* Dark on errors */
       --outline: #374151; /* Dark Gray */
+      --card: 222.2 84% 4.9%;
+      --card-foreground: 0 0% 100%;
     }
   }
 
@@ -56,5 +60,11 @@ body,
 @layer components{
   .link-text{
     @apply  text-n-3 text-sm font-poppins font-medium uppercase transition-colors hover:text-n-2/90 hover:font-semibold;
+  }
+  .radioGroup-item{
+    @apply size-[16px] rounded-full bg-white border border-n-4/90  outline-none hover:bg-n-4/20 cursor-pointer;
+  }
+  .radioGroup-indicator{
+    @apply relative flex size-full items-center justify-center after:block after:size-[8px] after:rounded-full after:bg-primary-3;
   }
 } 

@@ -4,7 +4,6 @@ import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import * as Checkbox from "@radix-ui/react-checkbox";
-import * as RadioGroup from "@radix-ui/react-radio-group";
 import {
   Card,
   CardContent,
@@ -14,13 +13,13 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import {
   ChevronRight,
   ChevronLeft,
-  User,
-  Briefcase,
+  MapPin,
   Trash,
+  HeartHandshake,
+  ImageIcon,
   CheckIcon,
 } from "lucide-react";
 import { Label } from "@/components/ui/label";
@@ -29,109 +28,94 @@ import Image from "next/image";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/logo";
-import { updateUser, updateUserProfile } from "@/actions/user";
-import { useUser } from "@clerk/nextjs";
+import { updateUserProfile } from "@/actions/user";
+import { updateStream } from "@/actions/stream";
 import Link from "next/link";
 
-interface ProfileData {
-  fullName: string;
-  age: number;
-  bio: string;
-  profileImage: string | null;
-  gender: string;
-  preference: string;
-}
-enum Preference {
-  MEN = "Men",
-  WOMEN = "women",
-  OTHERS = "others",
-  UNKNOWN = "Prefer not to say",
-}
-
-enum Gender {
-  MALE = "male",
-  FEMALE = "female",
-  OTHERS = "others",
-  UNKNOWN = "Prefer not to say",
+interface modelData {
+  approvalImage: string | null;
+  location: string;
+  interests: string[];
+  socials: {
+    twitter?: string;
+    instagram?: string;
+    facebook?: string;
+  };
 }
 
 const ModelProfileSetup = () => {
   const router = useRouter();
-  const { user } = useUser();
   const [currentStep, setCurrentStep] = useState(1);
-  const [errors, setErrors] = useState<{ [key: string]: string }>({});
   const [loading, startTransition] = useTransition();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
-  const [profileData, setProfileData] = useState<ProfileData>({
-    fullName: "",
-    age: 18,
-    bio: "",
-    profileImage: null,
-    gender: Gender.UNKNOWN,
-    preference: Preference.UNKNOWN,
+  const [modelData, setModelData] = useState<modelData>({
+    approvalImage: null,
+    location: "",
+    interests: [],
+    socials: {
+      twitter: "",
+      instagram: "",
+      facebook: "",
+    },
   });
 
-  const totalSteps = 2;
+  const totalSteps = 3;
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setProfileData((prev) => ({
+    setModelData((prev) => ({
       ...prev,
       [name]: value,
     }));
   };
-  const handleRadioChange = (field: keyof ProfileData, value: string) => {
-    setProfileData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
-  };
 
   const onRemove = () => {
-    setProfileData((prev) => ({
+    setModelData((prev) => ({
       ...prev,
-      ["profileImage"]: null,
+      ["approvalImage"]: null,
+    }));
+  };
+  const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setModelData((prev) => ({
+      ...prev,
+      socials: {
+        ...prev.socials,
+        [name]: value,
+      },
     }));
   };
 
-  const validateForm = () => {
-    const errors: { [key: string]: string } = {};
-    if (profileData.age < 18) {
-      errors.age = "You must be at least 18 years old";
-    }
-    if (profileData.bio.length > 200) {
-      errors.bio = "Bio must be 200 characters or less";
-    }
-    setErrors(errors);
-    return Object.keys(errors).length === 0;
+  const handleInterestInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const interests = e.target.value.split(",").map((item) => item.trim());
+    setModelData((prev) => ({
+      ...prev,
+      interests,
+    }));
   };
 
   const handleSubmit = async () => {
-    if (!validateForm()) {
-      toast.error("Please fix the form errors");
-      return;
-    }
     if (!agreedToTerms) {
       toast.error("Please check the terms and conditions");
       return;
     }
     startTransition(() => {
       Promise.all([
-        updateUser({
-          imageUrl: profileData.profileImage || user?.imageUrl,
+        updateStream({
+          approvalImage: modelData.approvalImage,
         }),
         updateUserProfile({
-          fullName: profileData.fullName,
-          age: profileData.age,
-          gender: profileData.gender,
-          bio: profileData.bio,
-          preference: profileData.preference,
+          location: modelData.location,
+          intrests: modelData.interests,
+          socials: JSON.stringify(modelData.socials),
         }),
       ])
         .then(() => {
-          toast.success("User profile created successfully");
+          toast.success(
+            "Wait for admin approval so as to start streaming.The process takes at most 3 days."
+          );
           router.push("/");
         })
         .catch((error) => {
@@ -147,48 +131,8 @@ const ModelProfileSetup = () => {
         return (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Full Name</Label>
-              <Input
-                name="fullName"
-                value={profileData.fullName}
-                onChange={handleInputChange}
-                placeholder="John Doe"
-              />
-            </div>
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Age</Label>
-              <Input
-                name="age"
-                value={profileData.age}
-                onChange={handleInputChange}
-                placeholder="You must be at least 18 years"
-              />
-              {errors.age && (
-                <p className="text-s-1 text-xs font-medium">{errors.age}</p>
-              )}
-            </div>
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Bio</Label>
-              <Textarea
-                name="bio"
-                value={profileData.bio}
-                onChange={handleInputChange}
-                placeholder="Tell us about yourself..."
-                className="h-32"
-              />
-              {errors.bio && (
-                <p className="text-s-1 text-xs font-medium">{errors.bio}</p>
-              )}
-            </div>
-          </div>
-        );
-
-      case 2:
-        return (
-          <div className="space-y-4">
-            <div className="space-y-2">
-              <Label className="text-sm font-medium">Profile Image</Label>
-              {profileData.profileImage ? (
+              <Label className="text-sm font-medium">Approval Image</Label>
+              {modelData.approvalImage ? (
                 <div className="relative aspect-square rounded-xl overflow-hidden border">
                   <div className="absolute top-2 right-2 z-[10]">
                     <Hint label="Remove Profile iamge" asChild side="left">
@@ -205,7 +149,7 @@ const ModelProfileSetup = () => {
                   </div>
                   <Image
                     alt="profile image"
-                    src={profileData.profileImage}
+                    src={modelData.approvalImage}
                     fill
                     className="object-cover"
                   />
@@ -213,10 +157,11 @@ const ModelProfileSetup = () => {
               ) : (
                 <div className="rounded-xl border outline-dashed outline-n-4">
                   <UploadDropzone
-                    endpoint="profileImageUploader"
+                    endpoint="approvalImageUploader"
                     appearance={{
                       label: {
                         color: "black",
+                        cursor: "pointer",
                       },
                       button: {
                         color: "black",
@@ -226,12 +171,13 @@ const ModelProfileSetup = () => {
                       },
                       allowedContent: {
                         color: "black",
+                        cursor: "pointer",
                       },
                     }}
                     onClientUploadComplete={(res) => {
-                      setProfileData((prev) => ({
+                      setModelData((prev) => ({
                         ...prev,
-                        ["profileImage"]: res?.[0]?.url,
+                        ["approvalImage"]: res?.[0]?.url,
                       }));
                     }}
                     onUploadError={() => {
@@ -242,72 +188,93 @@ const ModelProfileSetup = () => {
               )}
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">Gender</label>
-              <RadioGroup.Root
-                defaultValue="Prefer not to say"
-                aria-label="gender"
-                onValueChange={(value) => handleRadioChange("gender", value)}
-              >
-                <div className="flex items-center gap-4 flex-wrap">
-                  {Object.values(Gender).map((genderOption) => (
-                    <div
-                      key={genderOption}
-                      className="flex items-center space-x-2"
-                    >
-                      <RadioGroup.Item
-                        aria-label="gender"
-                        className="radioGroup-item peer"
-                        value={genderOption}
-                        id={genderOption}
-                      >
-                        <RadioGroup.Indicator className="radioGroup-indicator" />
-                      </RadioGroup.Item>
-                      <label
-                        className="text-xs font-medium text-n-3 peer-checked:text-n-1"
-                        htmlFor={genderOption}
-                      >
-                        {genderOption}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup.Root>
+              <h3 className="font-semibold mb-2">
+                The image above is to verify that you are of legal age and thus
+                legibale to become a model
+              </h3>
+              <p className="text-sm text-n-2">
+                The uploaded image must meet the following conditions:
+              </p>
+              <ul className="list-disc ml-6 mt-2 text-sm text-n-2 space-y-1">
+                <li>
+                  The image must be clear and unobstructed, showing your face
+                  and a valid form of identification (e.g., ID, passport, or
+                  driver&apos;s license).
+                </li>
+                <li>
+                  The identification document should display your name and date
+                  of birth but may obscure sensitive information like ID
+                  numbers.
+                </li>
+                <li>The image must not be edited or manipulated in any way.</li>
+                <li>The document should be valid and not expired.</li>
+                <li>
+                  Ensure the image is well-lit and not blurry to allow for
+                  proper verification.
+                </li>
+                <li>
+                  The image must comply with local laws and regulations
+                  regarding age verification and content access.
+                </li>
+              </ul>
+            </div>
+          </div>
+        );
+
+      case 2:
+        return (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <Label className="text-sm font-medium">Location</Label>
+              <Input
+                name="location"
+                value={modelData.location}
+                onChange={handleInputChange}
+                placeholder="City, Country"
+              />
             </div>
             <div className="space-y-2">
-              <label className="text-sm font-medium">
-                Preference (I like...)
-              </label>
-              <RadioGroup.Root
-                defaultValue="Prefer not to say"
-                aria-label="preference"
-                onValueChange={(value) =>
-                  handleRadioChange("preference", value)
-                }
-              >
-                <div className="flex items-center gap-4 flex-wrap">
-                  {Object.values(Preference).map((preferenceOption) => (
-                    <div
-                      key={preferenceOption}
-                      className="flex items-center space-x-2"
-                    >
-                      <RadioGroup.Item
-                        aria-label="gender"
-                        className="radioGroup-item peer"
-                        value={preferenceOption}
-                        id={preferenceOption}
-                      >
-                        <RadioGroup.Indicator className="radioGroup-indicator" />
-                      </RadioGroup.Item>
-                      <label
-                        className="text-xs font-medium text-n-3 peer-checked:text-n-1"
-                        htmlFor={preferenceOption}
-                      >
-                        {preferenceOption}
-                      </label>
-                    </div>
-                  ))}
-                </div>
-              </RadioGroup.Root>
+              <Label className="text-sm font-medium">
+                Interests (comma-separated)
+              </Label>
+              <Input
+                value={modelData.interests.join(", ")}
+                onChange={handleInterestInput}
+                placeholder="Technology, Reading, Travel"
+              />
+            </div>
+          </div>
+        );
+
+      case 3:
+        return (
+          <div className="space-y-4">
+            <div className="space-y-2">
+              <label className="text-sm font-medium">X Profile</label>
+              <Input
+                name="twitter"
+                value={modelData.socials.twitter}
+                onChange={handleSocialLinkChange}
+                placeholder="X username (twitter)"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Instagram Profile</label>
+              <Input
+                name="instagram"
+                value={modelData.socials.instagram}
+                onChange={handleSocialLinkChange}
+                placeholder="instagram username"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-sm font-medium">facebook Profile</label>
+              <Input
+                name="facebook"
+                value={modelData.socials.facebook}
+                onChange={handleSocialLinkChange}
+                placeholder="facebook username"
+              />
             </div>
             <div className="space-y-2">
               <p className="text-sm text-n-3">
@@ -346,9 +313,11 @@ const ModelProfileSetup = () => {
   const StepIcon = () => {
     switch (currentStep) {
       case 1:
-        return <User className="w-6 h-6" />;
+        return <ImageIcon className="w-6 h-6" />;
       case 2:
-        return <Briefcase className="w-6 h-6" />;
+        return <MapPin className="w-6 h-6" />;
+      case 3:
+        return <HeartHandshake className="w-6 h-6" />;
       default:
         return null;
     }
@@ -356,19 +325,19 @@ const ModelProfileSetup = () => {
 
   return (
     <div className="flex gap-x-44 max-md:flex-col-reverse max-md:items-center max-md:justify-center max-md:gap-x-0 max-md:gap-4">
-      <div className="flex-1 ">
+      <div className="lg:flex-1">
         <Card className="w-full max-w-xl">
           <CardHeader>
             <div className="flex items-center space-x-2 mb-4">
               <StepIcon />
-              <CardTitle>Tell us about yourself</CardTitle>
+              <CardTitle>Create your model profile</CardTitle>
             </div>
-            <div className="flex items-center gap-8 mt-2 mx-auto">
+            <div className="flex gap-8 items-center mt-2 mx-auto">
               {Array.from({ length: totalSteps }).map((_, index) => (
                 <div
                   key={index}
                   className={cn(
-                    "h-12 w-12  mx-1 rounded-full flex items-center justify-center",
+                    "h-11 w-11  mx-1 rounded-full flex items-center justify-center",
                     index + 1 <= currentStep ? "bg-blue-600" : "bg-n-4"
                   )}
                 >

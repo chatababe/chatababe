@@ -21,12 +21,14 @@ export const updateStream = async (values: Partial<Stream>) => {
 
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
+      approvalImage: values.approvalImage,
       name: values.name,
       goalText: values.goalText,
       type: values.type,
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
+      tags:values.tags
     };
 
     const stream = await db.stream.update({
@@ -60,23 +62,30 @@ export const createStream = async (values: Partial<Stream>) => {
       where: { userId: self.id },
     });
 
-    if (selfStream) {
-      throw new Error("Stream already exists");
-    }
-     if (!values.name || values.name.trim() === "") {
+    if (!values.name || values.name.trim() === "") {
       throw new Error("Stream name is required");
     }
 
+    if (selfStream) {
+      try {
+        const stream = await updateStream(values);
+        return stream;
+      } catch {
+        throw new Error("Internal Error");
+      }
+    }
 
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
       name: values.name.trim(),
+      approvalImage: values.approvalImage,
       goalText: values.goalText,
       type: values.type,
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
-      isPublic: values.isPublic || true
+      isPublic: values.isPublic || true,
+      tags: values.tags,
     };
 
     const stream = await db.user.update({

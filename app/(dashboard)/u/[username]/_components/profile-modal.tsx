@@ -102,7 +102,6 @@ const ProfileModal = ({ user }: { user: ProfileModalProps }) => {
       ...prevData,
       [name]: processedValue,
     }));
-    console.log(data);
 
     if (formErrors[name]) {
       setFormErrors((prev) => {

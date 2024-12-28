@@ -9,7 +9,7 @@ const Header = async () => {
   if (!self) {
     return (
       <header className="w-full bg-white z-50 mb-2">
-        <Topbar username="Anonymous" currentTokens={0} />
+        <Topbar stream={null} username="Anonymous" currentTokens={0} />
         <Navbar />
       </header>
     );
@@ -20,7 +20,7 @@ const Header = async () => {
 
   return (
     <header className="w-full bg-white z-50 mb-2">
-      <Topbar username={user?.username || "Anonymous"} currentTokens={user?.currentTokens || 0} />
+      <Topbar stream={user?.stream} username={user?.username || "Anonymous"} currentTokens={user?.currentTokens || 0} />
       <Navbar />
     </header>
   );

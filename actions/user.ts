@@ -10,8 +10,8 @@ export const updateUser = async (values: Partial<User>) => {
   const self = await getSelf();
 
   const validData = {
-    firstName: values.firstName,
-    lastName: values.lastName,
+    username: values.username,
+    imageUrl:values.imageUrl,
   };
 
   const user = await db.user.update({
@@ -38,11 +38,14 @@ export const updateUserProfile = async (values: Partial<Profile>) => {
   }
 
   const validData = {
+    fullName:values.fullName?.trim(),
     age,
     gender,
     bio: values.bio?.trim(),
     location,
     preference: values.preference,
+    interests: values.intrests,
+    socials: values.socials
   };
 
   const profile = await db.profile.upsert({
