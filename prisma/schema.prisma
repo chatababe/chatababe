@@ -34,7 +34,7 @@ model Profile {
   bio      String?
 
   age        Int
-  location   String
+  location   String?
   preference String?
   gender     String
   intrests   String[]

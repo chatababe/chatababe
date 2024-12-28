@@ -33,8 +33,8 @@ export const updateUserProfile = async (values: Partial<Profile>) => {
     throw new Error("User not authenticated");
   }
 
-  const { age, gender, location } = values;
-  if (!age || !gender || !location) {
+  const { age, gender } = values;
+  if (!age || !gender) {
     throw new Error("Missing required fields: age, gender, or location");
   }
 
