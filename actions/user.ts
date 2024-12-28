@@ -8,6 +8,7 @@ import { getSelf } from "@/lib/auth-service";
 
 export const updateUser = async (values: Partial<User>) => {
   const self = await getSelf();
+  console.log("update user: ",self);
 
   const validData = {
     username: values.username,
@@ -47,6 +48,7 @@ export const updateUserProfile = async (values: Partial<Profile>) => {
     interests: values.intrests,
     socials: values.socials
   };
+  console.log(validData);
 
   const profile = await db.profile.upsert({
     where: { userId: self.id },
