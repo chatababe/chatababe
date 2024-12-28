@@ -2,7 +2,8 @@ import { getSelf } from "@/lib/auth-service";
 import { getStreamByUserId } from "@/lib/stream-service";
 
 import ToggleCard from "./_components/toggle-card";
-import StreamModal from "@/components/stream-modal";
+import { Button } from "@/components/ui/button";
+import { redirect } from "next/navigation";
 
 const ChatPage = async () => {
   const self = await getSelf();
@@ -10,8 +11,21 @@ const ChatPage = async () => {
 
   if (!stream) {
     return (
-      <div className="h-full flex items-center justify-center">
-        <StreamModal stream={null} />
+      <div className="min-h-[60rem] flex flex-col items-center justify-center text-center">
+        <p className="text-n-1 text-xl font-semibold mb-2">
+          You are not subscribed as a model.{" "}
+        </p>
+        <p className="text-n-4 text-sm font-medium mb-4">
+          {" "}
+          Create your a profile and beging your modelling journey
+        </p>
+        <Button
+          variant="default"
+          size="lg"
+          onClick={redirect("/model-profile")}
+        >
+          Become a model
+        </Button>
       </div>
     );
   }

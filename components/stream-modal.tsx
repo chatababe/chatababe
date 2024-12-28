@@ -43,7 +43,7 @@ enum Type {
   TRANS = "trans",
 }
 
-const StreamModal = ({ stream }: { stream: Stream | null | undefined }) => {
+const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, title?:string }) => {
   const closeRef = useRef<ComponentRef<"button">>(null);
   const [isPending, startTransition] = useTransition();
   const router = useRouter();
@@ -125,7 +125,7 @@ const StreamModal = ({ stream }: { stream: Stream | null | undefined }) => {
           disabled={!user}
           onClick={handleClick}
         >
-          Broadcast yourself
+          {title || "Broadcast yourself"}
         </button>
       </DialogTrigger>
       <DialogContent className="my-2 max-h-[80vh] overflow-y-scroll hidden-scrollbar">
