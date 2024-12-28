@@ -2,13 +2,18 @@ import { getSelf } from "@/lib/auth-service";
 import { getStreamByUserId } from "@/lib/stream-service";
 
 import ToggleCard from "./_components/toggle-card";
+import StreamModal from "@/components/stream-modal";
 
 const ChatPage = async () => {
   const self = await getSelf();
   const stream = await getStreamByUserId(self.id);
 
   if (!stream) {
-    throw new Error("Stream not found");
+    return (
+      <div className="h-full flex items-center justify-center">
+        <StreamModal stream={null} />
+      </div>
+    );
   }
 
   return (
