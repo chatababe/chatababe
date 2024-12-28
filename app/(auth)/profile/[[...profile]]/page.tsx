@@ -81,6 +81,7 @@ const ModelProfileSetup = () => {
       ...prev,
       [name]: value,
     }));
+    console.log(profileData);
   };
   const handleRadioChange = (field: keyof ProfileData, value: string) => {
     setProfileData((prev) => ({
@@ -114,7 +115,7 @@ const ModelProfileSetup = () => {
       return;
     }
     if (!agreedToTerms) {
-      toast.error("Please check the terms and conditions");
+      toast.error("Ensure you have accepted the terms and conditions");
       return;
     }
     startTransition(() => {
