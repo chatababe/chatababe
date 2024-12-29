@@ -94,19 +94,9 @@ export enum Gender {
   UNKNOWN = "Prefer not to say",
 }
 
-export const age = [
-  "18-24",
-  "24-32",
-  "33-45",
-  "45-60",
-  "older"
-];
+export const age = ["18-24", "24-32", "33-45", "45-60", "older"];
 
-export const rooms = [
-  "Intimate",
-  "Mid-sized",
-  "High-traffic"
-];
+export const rooms = ["Intimate", "Mid-sized", "High-traffic"];
 
 export const tags = [
   "asian",
@@ -160,5 +150,33 @@ export const regions = [
   "South America",
   "Asia",
   "Europe/Russia",
-  "Other"
+  "Other",
+];
+
+export const streamBasedRoutes = [
+  "6 Tokens per Minute",
+  "12-18 Tokens per Minute",
+  "30-42 Tokens per Minute",
+  "60-72 Tokens per Minute",
+  "90+ Tokens per Minute",
+  "Private Shows",
+  "New Cams",
+];
+
+export const userBasedRoutes = [
+  "Teen Cams (18+)",
+  "18 to 21 cams",
+  "20 to 30 cams",
+  "30 to 50 cams",
+  "Mature cams",
+  "North American Cams",
+  "South American Cams",
+  "Euro Russian Cams",
+  "Asian Cams",
+  "Other Regions",
+  "Featured Cams",
+  "Female Cams",
+  "Male Cams",
+  "Couple Cams",
+  "Trans Cams",
 ];

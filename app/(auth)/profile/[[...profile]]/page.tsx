@@ -29,7 +29,7 @@ import Image from "next/image";
 import { UploadDropzone } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/logo";
-import { updateUser, updateUserProfile } from "@/actions/user";
+import { createUserProfile, updateUser } from "@/actions/user";
 import { useUser } from "@clerk/nextjs";
 import Link from "next/link";
 
@@ -55,7 +55,7 @@ enum Gender {
   UNKNOWN = "Prefer not to say",
 }
 
-const ModelProfileSetup = () => {
+const ProfileSetup = () => {
   const router = useRouter();
   const { user } = useUser();
   const [currentStep, setCurrentStep] = useState(1);
@@ -122,7 +122,7 @@ const ModelProfileSetup = () => {
         updateUser({
           imageUrl: profileData.profileImage || user?.imageUrl,
         }),
-        updateUserProfile({
+        createUserProfile({
           fullName: profileData.fullName,
           age: parseInt(`${profileData.age}`),
           gender: profileData.gender,
@@ -427,4 +427,4 @@ const ModelProfileSetup = () => {
   );
 };
 
-export default ModelProfileSetup;
+export default ProfileSetup;

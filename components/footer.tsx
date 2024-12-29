@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
     {
       title: "Free cams by Age",
       links: [
-        "Teen Cams (18+)",
+        "Teen Cams",
         "18 to 21 cams",
         "20 to 30 cams",
         "30 to 50 cams",
@@ -42,7 +42,6 @@ const Footer: React.FC = () => {
     {
       title: "Free Cams",
       links: [
-        "Featured Cams",
         "Female Cams",
         "Male Cams",
         "Couple Cams",
@@ -111,10 +110,10 @@ const Footer: React.FC = () => {
                 {category.title}
               </h3>
               <ul className="space-y-1">
-                {category.links.map((link, linkIndex) => (
-                  <li key={linkIndex}>
+                {category.links.map((link) => (
+                  <li key={link}>
                     <Link
-                      href="#"
+                      href={`/tags/${link}`}
                       className="text-blue-900/90 hover:text-blue-900 text-xs font-medium"
                     >
                       {link}

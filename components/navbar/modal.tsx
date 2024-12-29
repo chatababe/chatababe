@@ -6,7 +6,7 @@ import TokenModal from "../tokens-modal";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
 import { Button } from "../ui/button";
-import { revalidatePath } from "next/cache";
+import { handleRevalidatePath } from "@/actions/logout";
 
 interface UserProps {
   username: string;
@@ -19,8 +19,10 @@ const Modal = ({ username, currentTokens }: UserProps) => {
 
   const handleLogout = async () => {
     try {
-      await signOut();
-      revalidatePath("/")
+      await Promise.all([
+        signOut(),
+        handleRevalidatePath(),
+    ])
       router.push("/");
     } catch (error) {
       console.error("Logout failed:", error);

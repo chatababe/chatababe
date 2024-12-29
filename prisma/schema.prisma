@@ -54,6 +54,7 @@ model Stream {
   type          String?
   approvalImage String?
   tags          String[]
+  tokenRate     Int      @default(0)
 
   ingressId String? @unique
   serverUrl String?

@@ -3,7 +3,7 @@ import { getStreamByUserId } from "@/lib/stream-service";
 
 import ToggleCard from "./_components/toggle-card";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 const ChatPage = async () => {
   const self = await getSelf();
@@ -11,7 +11,7 @@ const ChatPage = async () => {
 
   if (!stream) {
     return (
-      <div className="min-h-[60rem] flex flex-col items-center justify-center text-center">
+      <div className="min-h-[20rem] flex flex-col items-center justify-center text-center">
         <p className="text-n-1 text-xl font-semibold mb-2">
           You are not subscribed as a model.{" "}
         </p>
@@ -19,12 +19,13 @@ const ChatPage = async () => {
           {" "}
           Create your a profile and beging your modelling journey
         </p>
-        <Button
-          variant="default"
-          size="lg"
-          onClick={()=>redirect("/model-profile")}
-        >
-          Become a model
+        <Button variant="default" size="lg">
+          <Link
+            href="/model-profile"
+            className="text-n-5 font-semibold text-base"
+          >
+            Become a model
+          </Link>
         </Button>
       </div>
     );

@@ -2,7 +2,7 @@ import { getUserByUsername } from "@/lib/user-service";
 import StreamPlayer from "@/components/stream-player";
 import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
-import { redirect } from "next/navigation";
+import Link from "next/link";
 
 interface CreatorPageProps {
   params: Promise<{
@@ -17,7 +17,7 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
 
   if (!user || user.externalUserId !== externalUser?.id || !user.stream) {
     return (
-      <div className="min-h-[60rem] flex flex-col items-center justify-center text-center">
+      <div className="min-h-[20rem] flex flex-col items-center justify-center text-center">
         <p className="text-n-1 text-xl font-semibold mb-2">
           You are not subscribed as a model.{" "}
         </p>
@@ -25,12 +25,13 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
           {" "}
           Create your a profile and beging your modelling journey
         </p>
-        <Button
-          variant="default"
-          size="lg"
-          onClick={()=>redirect("/model-profile")}
-        >
-          Become a model
+        <Button variant="default" size="lg">
+          <Link
+            href="/model-profile"
+            className="text-n-5 font-semibold text-base"
+          >
+            Become a model
+          </Link>
         </Button>
       </div>
     );
