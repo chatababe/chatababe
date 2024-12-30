@@ -16,7 +16,7 @@ type StreamGrowthProps = {
 
 const Chart = ({ streamGrowth }: { streamGrowth: StreamGrowthProps[] }) => {
   return (
-    <div>
+    <div className="h-[300px]">
       <ResponsiveContainer width="100%" height="100%">
         <LineChart data={streamGrowth}>
           <XAxis dataKey="date" />

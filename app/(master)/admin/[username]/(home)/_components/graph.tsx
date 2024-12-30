@@ -12,8 +12,8 @@ const Graph = ({ approvalStats }: { approvalStats: ApprovalStatsProps[] }) => {
   const COLORS = ["#22c55e", "#eab308", "#ef4444"];
 
   return (
-    <div>
-      <ResponsiveContainer width="100%" height="100%">
+    <div className="h-[300px]">
+      <ResponsiveContainer width="100%" height="80%">
         <PieChart>
           <Pie
             data={approvalStats}
