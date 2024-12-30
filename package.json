@@ -39,6 +39,7 @@
     "react-dom": "^18.3.1",
     "react-redux": "^9.2.0",
     "react-select": "^5.9.0",
+    "recharts": "^2.15.0",
     "sonner": "^1.7.0",
     "string-to-color": "^2.2.2",
     "stripe": "^17.5.0",

@@ -94,7 +94,6 @@ export const updateUserProfile = async (values: Partial<Profile>) => {
     },
   });
 
-  revalidatePath(`/${self?.username}`);
   revalidatePath(`/u/${self?.username}`);
 
   return updatedProfile;

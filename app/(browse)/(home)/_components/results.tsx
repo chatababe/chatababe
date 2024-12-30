@@ -9,7 +9,6 @@ const Results = async ({ category }: { category?: string }) => {
     category === "Featured"
       ? data
       : data.filter((item) => item.type === category);
-  console.log(filteredData);
 
   return (
     <div className="min-h-screen">

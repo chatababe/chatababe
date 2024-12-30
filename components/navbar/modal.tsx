@@ -5,7 +5,6 @@ import { MessageCircle, Bell, UserCircle } from "lucide-react";
 import TokenModal from "../tokens-modal";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
-import { Button } from "../ui/button";
 import { handleRevalidatePath } from "@/actions/logout";
 
 interface UserProps {
@@ -59,16 +58,14 @@ const Modal = ({ username, currentTokens }: UserProps) => {
               <span className="text-sm text-n-2 font-bold">{username}</span>
             </p>
             <>
-              <Button
-                variant="link"
-                size="sm"
+              <button
                 className="bg-transparent ml-auto"
                 onClick={username === "Anonymous" ? handleSignIn : handleLogout}
               >
                 <p className="text-xs text-s-3 ml-auto font-medium cursor-pointer">
                   {username === "Anonymous" ? "(log in)" : "(log out)"}
                 </p>
-              </Button>
+              </button>
             </>
           </div>
           <div className="flex items-center w-full">

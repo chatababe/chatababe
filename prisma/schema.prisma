@@ -13,6 +13,7 @@ model User {
   imageUrl       String
   externalUserId String @unique
   currentTokens  Int    @default(0)
+  role           String @default("user")
 
   following  Follow[]       @relation("Following")
   followedBy Follow[]       @relation("FollowedBy")
@@ -48,14 +49,13 @@ model Profile {
 }
 
 model Stream {
-  id            String   @id @default(auto()) @map("_id") @db.ObjectId
-  name          String
-  thumbnailUrl  String?
-  goalText      String?
-  type          String?
-  approvalImage String?
-  tags          String[]
-  tokenRate     Int      @default(0)
+  id           String   @id @default(auto()) @map("_id") @db.ObjectId
+  name         String
+  thumbnailUrl String?
+  goalText     String?
+  type         String?
+  tags         String[]
+  tokenRate    Int      @default(0)
 
   ingressId String? @unique
   serverUrl String?

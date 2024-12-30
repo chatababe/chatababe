@@ -21,7 +21,6 @@ export const updateStream = async (values: Partial<Stream>) => {
 
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
-      approvalImage: values.approvalImage,
       name: values.name,
       goalText: values.goalText,
       type: values.type,
@@ -65,7 +64,6 @@ export const createStream = async (values: Partial<Stream>) => {
     const validData = {
       thumbnailUrl: values.thumbnailUrl,
       name: values.name.trim(),
-      approvalImage: values.approvalImage,
       goalText: values.goalText,
       type: values.type,
       isChatEnabled: values.isChatEnabled,
@@ -87,6 +85,36 @@ export const createStream = async (values: Partial<Stream>) => {
         ...validData,
       },
     });
+
+    // Revalidate relevant paths
+    const pathsToRevalidate = [
+      `/u/${self.username}/chat`,
+      `/u/${self.username}`,
+      `/${self.username}`,
+    ];
+
+    pathsToRevalidate.forEach((path) => revalidatePath(path));
+
+    return stream;
+  } catch {
+    throw new Error("Internal Error");
+  }
+};
+
+export const createInitialStream = async () => {
+  try {
+    const self = await getSelf();
+
+    if (!self) {
+      throw new Error("User not authenticated");
+    }
+    
+    const stream = await db.stream.create({
+      data:{
+        userId:self.id,
+        name:`${self.username}'s stream`
+      }
+    })
 
     // Revalidate relevant paths
     const pathsToRevalidate = [

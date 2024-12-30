@@ -37,6 +37,7 @@ import Logo from "@/components/logo";
 import { updateUserProfile } from "@/actions/user";
 import Link from "next/link";
 import { updateModelApprovalImage } from "@/actions/model";
+import { createInitialStream } from "@/actions/stream";
 
 interface modelData {
   identificationImage: string | null;
@@ -121,6 +122,7 @@ const ModelProfileSetup = () => {
           intrests: modelData.intrests,
           socials: JSON.stringify(modelData.socials),
         }),
+        createInitialStream(),
       ])
         .then(() => {
           toast.success(

@@ -124,7 +124,6 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
       ...prevData,
       [e.target.name]: e.target.value,
     }));
-    console.log(data);
   };
 
   return (

@@ -23,7 +23,7 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
         </p>
         <p className="text-n-3 text-sm font-medium mb-4">
           {" "}
-          Create your a profile and egin your modelling journey
+          Create your a profile and begin your modelling journey
         </p>
         <Button variant="default" size="lg">
           <Link

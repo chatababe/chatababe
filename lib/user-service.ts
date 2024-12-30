@@ -11,6 +11,7 @@ export const getUserByUsername = async (username: string) => {
       username: true,
       imageUrl: true,
       currentTokens:true,
+      role:true,
       profile:{
         select:{
           bio: true,
