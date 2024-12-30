@@ -58,9 +58,12 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
     type: Type.FEMALE,
     tags: [],
   });
+
   const handleClick = () => {
     if (!stream) {
       router.push("/model-profile");
+    }else if(!stream.approved){
+      toast.error("Unable to broadcast yourself, model profile has not been approved");
     }
   };
   const handleTagsInput = (tag: string) => {
@@ -78,7 +81,14 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
   const isPublic = data.variant === "public";
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  
     e.preventDefault();
+
+    if(!stream?.approved){
+      closeRef?.current?.click();
+      toast.error("Your model profile has not been approved");
+      return;
+    }
 
     startTransition(() => {
       createStream({
@@ -92,7 +102,7 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
         .then(() => {
           toast.success("Stream created");
           closeRef?.current?.click();
-          router.push(`/${user?.username}/`);
+          router.push(`/u/${user?.username}/stream`);
         })
         .catch(() => {
           toast.error(

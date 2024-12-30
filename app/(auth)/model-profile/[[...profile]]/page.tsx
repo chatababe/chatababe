@@ -22,6 +22,12 @@ import {
   ImageIcon,
   CheckIcon,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
 import Hint from "@/components/hint";
 import Image from "next/image";
@@ -29,13 +35,14 @@ import { UploadDropzone } from "@/lib/uploadthing";
 import { cn } from "@/lib/utils";
 import Logo from "@/components/logo";
 import { updateUserProfile } from "@/actions/user";
-import { updateStream } from "@/actions/stream";
 import Link from "next/link";
+import { updateModelApprovalImage } from "@/actions/model";
 
 interface modelData {
-  approvalImage: string | null;
+  identificationImage: string | null;
+  faceImage: string | null;
   location: string;
-  interests: string[];
+  intrests: string[];
   socials: {
     twitter?: string;
     instagram?: string;
@@ -49,9 +56,10 @@ const ModelProfileSetup = () => {
   const [loading, startTransition] = useTransition();
   const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [modelData, setModelData] = useState<modelData>({
-    approvalImage: null,
+    identificationImage: null,
+    faceImage: null,
     location: "",
-    interests: [],
+    intrests: [],
     socials: {
       twitter: "",
       instagram: "",
@@ -71,10 +79,11 @@ const ModelProfileSetup = () => {
     }));
   };
 
-  const onRemove = () => {
+  const onRemove = (label: string) => {
     setModelData((prev) => ({
       ...prev,
-      ["approvalImage"]: null,
+      [label === "identificationImage" ? "identificationImage" : "faceImage"]:
+        null,
     }));
   };
   const handleSocialLinkChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -89,10 +98,10 @@ const ModelProfileSetup = () => {
   };
 
   const handleInterestInput = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const interests = e.target.value.split(",").map((item) => item.trim());
+    const intrests = e.target.value.split(",").map((item) => item.trim());
     setModelData((prev) => ({
       ...prev,
-      interests,
+      intrests,
     }));
   };
 
@@ -103,12 +112,13 @@ const ModelProfileSetup = () => {
     }
     startTransition(() => {
       Promise.all([
-        updateStream({
-          approvalImage: modelData.approvalImage,
+        updateModelApprovalImage({
+          idImageUrl: modelData.identificationImage,
+          faceImageUrl: modelData.faceImage,
         }),
         updateUserProfile({
           location: modelData.location,
-          intrests: modelData.interests,
+          intrests: modelData.intrests,
           socials: JSON.stringify(modelData.socials),
         }),
       ])
@@ -131,8 +141,10 @@ const ModelProfileSetup = () => {
         return (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Approval Image</Label>
-              {modelData.approvalImage ? (
+              <Label className="text-sm font-medium">
+                Identification Card Image
+              </Label>
+              {modelData.identificationImage ? (
                 <div className="relative aspect-square rounded-xl overflow-hidden border">
                   <div className="absolute top-2 right-2 z-[10]">
                     <Hint label="Remove Profile iamge" asChild side="left">
@@ -140,7 +152,7 @@ const ModelProfileSetup = () => {
                         variant="default"
                         type="button"
                         disabled={loading}
-                        onClick={onRemove}
+                        onClick={() => onRemove("identificationImage")}
                         className="h-auto w-auto p-1.5"
                       >
                         <Trash className="h-4 w-4" />
@@ -149,7 +161,7 @@ const ModelProfileSetup = () => {
                   </div>
                   <Image
                     alt="profile image"
-                    src={modelData.approvalImage}
+                    src={modelData.identificationImage}
                     fill
                     className="object-cover"
                   />
@@ -157,7 +169,7 @@ const ModelProfileSetup = () => {
               ) : (
                 <div className="rounded-xl border outline-dashed outline-n-4">
                   <UploadDropzone
-                    endpoint="approvalImageUploader"
+                    endpoint="IDImageUploader"
                     appearance={{
                       label: {
                         color: "black",
@@ -177,7 +189,7 @@ const ModelProfileSetup = () => {
                     onClientUploadComplete={(res) => {
                       setModelData((prev) => ({
                         ...prev,
-                        ["approvalImage"]: res?.[0]?.url,
+                        ["identificationImage"]: res?.[0]?.url,
                       }));
                     }}
                     onUploadError={() => {
@@ -188,35 +200,100 @@ const ModelProfileSetup = () => {
               )}
             </div>
             <div className="space-y-2">
-              <h3 className="font-semibold mb-2">
-                The image above is to verify that you are of legal age and thus
-                legibale to become a model
-              </h3>
-              <p className="text-sm text-n-2">
-                The uploaded image must meet the following conditions:
-              </p>
-              <ul className="list-disc ml-6 mt-2 text-sm text-n-2 space-y-1">
-                <li>
-                  The image must be clear and unobstructed, showing your face
-                  and a valid form of identification (e.g., ID, passport, or
-                  driver&apos;s license).
-                </li>
-                <li>
-                  The identification document should display your name and date
-                  of birth but may obscure sensitive information like ID
-                  numbers.
-                </li>
-                <li>The image must not be edited or manipulated in any way.</li>
-                <li>The document should be valid and not expired.</li>
-                <li>
-                  Ensure the image is well-lit and not blurry to allow for
-                  proper verification.
-                </li>
-                <li>
-                  The image must comply with local laws and regulations
-                  regarding age verification and content access.
-                </li>
-              </ul>
+              <Label className="text-sm font-medium">Face Image</Label>
+              {modelData.faceImage ? (
+                <div className="relative aspect-square rounded-xl overflow-hidden border">
+                  <div className="absolute top-2 right-2 z-[10]">
+                    <Hint label="Remove Profile iamge" asChild side="left">
+                      <Button
+                        variant="default"
+                        type="button"
+                        disabled={loading}
+                        onClick={() => onRemove("faceImage")}
+                        className="h-auto w-auto p-1.5"
+                      >
+                        <Trash className="h-4 w-4" />
+                      </Button>
+                    </Hint>
+                  </div>
+                  <Image
+                    alt="profile image"
+                    src={modelData.faceImage}
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              ) : (
+                <div className="rounded-xl border outline-dashed outline-n-4">
+                  <UploadDropzone
+                    endpoint="faceImageUploader"
+                    appearance={{
+                      label: {
+                        color: "black",
+                        cursor: "pointer",
+                      },
+                      button: {
+                        color: "black",
+                        backgroundColor: "transparent",
+                        cursor: "pointer",
+                        fontWeight: 500,
+                      },
+                      allowedContent: {
+                        color: "black",
+                        cursor: "pointer",
+                      },
+                    }}
+                    onClientUploadComplete={(res) => {
+                      setModelData((prev) => ({
+                        ...prev,
+                        ["faceImage"]: res?.[0]?.url,
+                      }));
+                    }}
+                    onUploadError={() => {
+                      toast.error("User not authenticated, Please Sign In");
+                    }}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="space-y-2">
+              <Accordion type="single" collapsible className="w-full">
+                <AccordionItem value="model_approval_image_requirements">
+                  <AccordionTrigger>
+                    The uploaded image must meet the following conditions:
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <ul className="list-disc ml-6 mt-2 text-sm text-n-2 space-y-1">
+                      <li>
+                        The image must be clear and unobstructed, showing your
+                        face and a valid form of identification (e.g., ID,
+                        passport, or driver&apos;s license).
+                      </li>
+                      <li>
+                        A clear photo with full name and today&apos;s date
+                        written on the paper
+                      </li>
+                      <li>
+                        The identification document should display your name and
+                        date of birth but may obscure sensitive information like
+                        ID numbers.
+                      </li>
+                      <li>
+                        The image must not be edited or manipulated in any way.
+                      </li>
+                      <li>The document should be valid and not expired.</li>
+                      <li>
+                        Ensure the image is well-lit and not blurry to allow for
+                        proper verification.
+                      </li>
+                      <li>
+                        The image must comply with local laws and regulations
+                        regarding age verification and content access.
+                      </li>
+                    </ul>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
           </div>
         );
@@ -235,10 +312,10 @@ const ModelProfileSetup = () => {
             </div>
             <div className="space-y-2">
               <Label className="text-sm font-medium">
-                Interests (comma-separated)
+                intrests (comma-separated)
               </Label>
               <Input
-                value={modelData.interests.join(", ")}
+                value={modelData.intrests.join(", ")}
                 onChange={handleInterestInput}
                 placeholder="Technology, Reading, Travel"
               />

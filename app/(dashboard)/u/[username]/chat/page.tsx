@@ -15,9 +15,9 @@ const ChatPage = async () => {
         <p className="text-n-1 text-xl font-semibold mb-2">
           You are not subscribed as a model.{" "}
         </p>
-        <p className="text-n-4 text-sm font-medium mb-4">
+        <p className="text-n-3 text-sm font-medium mb-4">
           {" "}
-          Create your a profile and beging your modelling journey
+          Create your a profile and begin your modelling journey
         </p>
         <Button variant="default" size="lg">
           <Link

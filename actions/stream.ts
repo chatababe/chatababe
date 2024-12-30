@@ -58,21 +58,8 @@ export const createStream = async (values: Partial<Stream>) => {
       throw new Error("User not authenticated");
     }
 
-    const selfStream = await db.stream.findUnique({
-      where: { userId: self.id },
-    });
-
     if (!values.name || values.name.trim() === "") {
       throw new Error("Stream name is required");
-    }
-
-    if (selfStream) {
-      try {
-        const stream = await updateStream(values);
-        return stream;
-      } catch {
-        throw new Error("Internal Error");
-      }
     }
 
     const validData = {
@@ -87,15 +74,17 @@ export const createStream = async (values: Partial<Stream>) => {
       isPublic: values.isPublic || true,
       tags: values.tags,
     };
-
-    const stream = await db.user.update({
+    
+    const stream = await db.stream.upsert({
       where: {
-        id: self.id,
+        userId: self.id
       },
-      data: {
-        stream: {
-          create: validData,
-        },
+      create: {
+        userId: self.id,
+        ...validData,
+      },
+      update: {
+        ...validData,
       },
     });
 

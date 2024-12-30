@@ -14,13 +14,14 @@ model User {
   externalUserId String @unique
   currentTokens  Int    @default(0)
 
-  following  Follow[] @relation("Following")
-  followedBy Follow[] @relation("FollowedBy")
-  blocking   Block[]  @relation("Blocking")
-  blockedBy  Block[]  @relation("BlockedBy")
+  following  Follow[]       @relation("Following")
+  followedBy Follow[]       @relation("FollowedBy")
+  blocking   Block[]        @relation("Blocking")
+  blockedBy  Block[]        @relation("BlockedBy")
   stream     Stream?
   profile    Profile?
   tokens     Tokens[]
+  approved   ApprovalImage?
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -116,4 +117,19 @@ model Tokens {
   updatedAt DateTime @updatedAt
 
   @@unique([userId, stripeId])
+}
+
+model ApprovalImage {
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @unique @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  idImageUrl   String?
+  faceImageUrl String?
+
+  status       String    @default("pending") // Status of the approval (e.g., "pending", "approved", "rejected")
+  approvalDate DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

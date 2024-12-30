@@ -53,7 +53,7 @@ export const ourFileRouter = {
 
       return { fileUrl: file.url };
     }),
-    approvalImageUploader: f({
+    IDImageUploader: f({
       image: {
         maxFileSize: "4MB",
         maxFileCount: 1,
@@ -64,16 +64,45 @@ export const ourFileRouter = {
         return { user: self };
       })
       .onUploadComplete(async ({ metadata, file }) => {
-        await db.stream.update({
+        await db.approvalImage.upsert({
           where: {
             id: metadata.user.id,
           },
-          data: {
-            approvalImage: file.url,
+          create: {
+            userId: metadata.user.id, 
+            idImageUrl: file.url,
+          },
+          update: {
+            idImageUrl: file.url,
           },
         });
         return { fileUrl: file.url };
       }),
+      faceImageUploader: f({
+        image: {
+          maxFileSize: "4MB",
+          maxFileCount: 1,
+        },
+      })
+        .middleware(async () => {
+          const self = await getSelf();
+          return { user: self };
+        })
+        .onUploadComplete(async ({ metadata, file }) => {
+          await db.approvalImage.upsert({
+            where: {
+              id: metadata.user.id,
+            },
+            create: {
+              userId: metadata.user.id, 
+              faceImageUrl: file.url,
+            },
+            update: {
+              faceImageUrl: file.url,
+            },
+          });
+          return { fileUrl: file.url };
+        }),
 } satisfies FileRouter;
 
 export type OurFileRouter = typeof ourFileRouter;
