@@ -3,6 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
+import Select from "react-select";
 import * as Checkbox from "@radix-ui/react-checkbox";
 import {
   Card,
@@ -38,6 +39,7 @@ import { updateUserProfile } from "@/actions/user";
 import Link from "next/link";
 import { updateModelApprovalImage } from "@/actions/model";
 import { createInitialStream } from "@/actions/stream";
+import { locations } from "@/constants";
 
 interface modelData {
   identificationImage: string | null;
@@ -70,16 +72,6 @@ const ModelProfileSetup = () => {
 
   const totalSteps = 3;
 
-  const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setModelData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const onRemove = (label: string) => {
     setModelData((prev) => ({
       ...prev,
@@ -95,6 +87,12 @@ const ModelProfileSetup = () => {
         ...prev.socials,
         [name]: value,
       },
+    }));
+  };
+  const onLocationChange = (selectedOption: LocationOption | null) => {
+    setModelData((prev) => ({
+      ...prev,
+      location: selectedOption ? selectedOption.value : "",
     }));
   };
 
@@ -304,12 +302,16 @@ const ModelProfileSetup = () => {
         return (
           <div className="space-y-4">
             <div className="space-y-2">
-              <Label className="text-sm font-medium">Location</Label>
-              <Input
+              <Label>Location</Label>
+              <Select
                 name="location"
-                value={modelData.location}
-                onChange={handleInputChange}
-                placeholder="City, Country"
+                options={locations}
+                onChange={onLocationChange}
+                isDisabled={loading}
+                placeholder="Select your location"
+                className="basic-single"
+                classNamePrefix="select"
+                instanceId="location-select"
               />
             </div>
             <div className="space-y-2">

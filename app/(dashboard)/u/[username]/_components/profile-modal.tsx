@@ -91,6 +91,8 @@ const ProfileModal = ({ user }: { user: ProfileModalProps }) => {
     } catch (error) {
       console.error("Error updating user profile:", error);
       toast.error("Error creating profile, please try again");
+    } finally{
+      closeRef.current?.click();
     }
   };
 
@@ -301,8 +303,12 @@ const ProfileModal = ({ user }: { user: ProfileModalProps }) => {
                 Cancel
               </Button>
             </DialogClose>
-            <Button disabled={isPending} variant="default" type="submit">
-              Save
+            <Button
+              disabled={isPending}
+              variant="default"
+              type="submit"
+            >
+              {`${isPending ? "Saving" : "Save"}`}
             </Button>
           </div>
         </form>

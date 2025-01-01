@@ -1,10 +1,8 @@
 "use client";
 
-import { useState } from "react";
 import SearchInput from "@/components/searchbar";
-import Settingstab from "@/components/settings";
 import { categories } from "@/constants";
-import { ListFilter, Settings } from "lucide-react";
+import { ListFilter } from "lucide-react";
 import React from "react";
 import { useFilterSidebar } from "@/store/use-filter-sidebar";
 import { useCategoryNavbar } from "@/store/use-category-navbar";
@@ -23,7 +21,6 @@ const Categorybar = () => {
     }
   };
 
-  const [openSettings, setOpenSettings] = useState(false);
   return (
     <>
       <div className="overflow-hidden mx-8 my-2 border-b border-n-4/40 max-lg:hidden">
@@ -54,13 +51,9 @@ const Categorybar = () => {
               <p className="text-[10px] text-primary-2">Filters</p>
             </button>
             <SearchInput />
-            <button onClick={() => setOpenSettings(!openSettings)}>
-              <Settings size={16} color="#2563eb" />
-            </button>
           </div>
         </div>
       </div>
-      {openSettings && <Settingstab setOpenSettings={setOpenSettings} />}
     </>
   );
 };

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { MessageCircle, Bell, UserCircle } from "lucide-react";
+import { UserCircle } from "lucide-react";
 import TokenModal from "../tokens-modal";
 import { useClerk } from "@clerk/clerk-react";
 import { useRouter } from "next/navigation";
@@ -42,14 +42,6 @@ const Modal = ({ username, currentTokens }: UserProps) => {
           <button>
             <UserCircle size={18} color="#FFFFFF" />
           </button>
-          <div className="ml-auto flex items-center gap-3">
-            <button>
-              <MessageCircle size={16} color="#FFFFFF" />
-            </button>
-            <button>
-              <Bell size={16} color="#FFFFFF" />
-            </button>
-          </div>
         </div>
         <div className="z-1 px-2 py-4 bg-primary-1">
           <div className="flex items-center w-full mb-2">
@@ -62,7 +54,7 @@ const Modal = ({ username, currentTokens }: UserProps) => {
                 className="bg-transparent ml-auto"
                 onClick={username === "Anonymous" ? handleSignIn : handleLogout}
               >
-                <p className="text-xs text-s-3 ml-auto font-medium cursor-pointer">
+                <p className="text-xs text-s-1 ml-auto font-medium cursor-pointer">
                   {username === "Anonymous" ? "(log in)" : "(log out)"}
                 </p>
               </button>

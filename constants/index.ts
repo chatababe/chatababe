@@ -68,16 +68,18 @@ export const plans = [
 ];
 
 export const locations = [
-  { value: "us", label: "United States" },
-  { value: "uk", label: "United Kingdom" },
-  { value: "ca", label: "Canada" },
-  { value: "au", label: "Australia" },
-  { value: "in", label: "India" },
-  { value: "br", label: "Brazil" },
-  { value: "de", label: "Germany" },
-  { value: "fr", label: "France" },
-  { value: "jp", label: "Japan" },
-  { value: "kr", label: "South Korea" },
+  { value: "North America", label: "United States" },
+  { value: "Europe/Russia", label: "United Kingdom" },
+  { value: "North America", label: "Canada" },
+  { value: "Other", label: "Australia" },
+  { value: "Asia", label: "India" },
+  { value: "South America", label: "Brazil" },
+  { value: "Europe/Russia", label: "Germany" },
+  { value: "Europe/Russia", label: "France" },
+  { value: "Asia", label: "Japan" },
+  { value: "Asia", label: "South Korea" },
+  {value:"Europe/Russia",label:"Russia"},
+  {value:"Other",label:"Africa"}
 ].sort((a, b) => a.label.localeCompare(b.label));
 
 export enum Preference {

@@ -85,8 +85,8 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
     e.preventDefault();
 
     if(!stream?.approved){
-      closeRef?.current?.click();
       toast.error("Your model profile has not been approved");
+      closeRef?.current?.click();
       return;
     }
 
@@ -101,13 +101,14 @@ const StreamModal = ({ stream, title }: { stream: Stream | null | undefined, tit
       })
         .then(() => {
           toast.success("Stream created");
-          closeRef?.current?.click();
           router.push(`/u/${user?.username}/stream`);
         })
         .catch(() => {
           toast.error(
             "An error occurred creating the stream. Please try again"
           );
+        })
+        .finally(()=>{
           closeRef?.current?.click();
         });
     });
