@@ -104,11 +104,11 @@ export const createStream = async (values: Partial<Stream>) => {
 export const createInitialStream = async () => {
   try {
     const self = await getSelf();
-
+    console.log(self)
     if (!self) {
       throw new Error("User not authenticated");
     }
-    
+
     const stream = await db.stream.create({
       data:{
         userId:self.id,
@@ -120,7 +120,6 @@ export const createInitialStream = async () => {
     const pathsToRevalidate = [
       `/u/${self.username}/chat`,
       `/u/${self.username}`,
-      `/${self.username}`,
     ];
 
     pathsToRevalidate.forEach((path) => revalidatePath(path));
