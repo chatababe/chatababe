@@ -103,7 +103,7 @@ const ModelProfileSetup = () => {
       intrests,
     }));
   };
-
+console.log(modelData);
   const handleSubmit = async () => {
     if (!agreedToTerms) {
       toast.error("Please check the terms and conditions");
