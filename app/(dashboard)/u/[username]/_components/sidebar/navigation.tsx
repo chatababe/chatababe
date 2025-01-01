@@ -2,7 +2,7 @@
 
 import { useUser } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import { Fullscreen, User, MessageSquare, Users } from "lucide-react";
+import { Fullscreen, User, MessageSquare, Users, KeyRound } from "lucide-react";
 
 import NavItem, { NavItemSkeleton } from "./nav-item";
 
@@ -30,6 +30,11 @@ const Navigation = () => {
       label: "Community",
       href: `/u/${user?.username}/community`,
       icon: Users,
+    },
+    {
+      label: "Keys",
+      href: `/u/${user?.username}/keys`,
+      icon: KeyRound,
     },
   ];
 

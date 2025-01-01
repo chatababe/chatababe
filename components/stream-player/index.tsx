@@ -55,8 +55,8 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
   if (!token || !name || !identity) {
     return <StreamPlayerSkeleton />;
   }
-  
-  const isHost = name === "host";
+
+  const isHost = identity.startsWith("host");
 
   return (
     <>
@@ -81,7 +81,12 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
             name={stream.name}
           />
         </div>
-        <div className={cn("col-span-1 max-lg:col-span-full", collapsed && "hidden")}>
+        <div
+          className={cn(
+            "col-span-1 max-lg:col-span-full",
+            collapsed && "hidden"
+          )}
+        >
           <Chat
             viewerName={name}
             hostName={user.username}

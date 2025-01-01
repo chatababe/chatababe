@@ -22,8 +22,8 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   const connectionState = useConnectionState();
   const participant = useRemoteParticipant(hostIdentity);
   const tracks = useTracks([
-    Track.Source.Camera,
-    Track.Source.Microphone,
+    { source: Track.Source.Camera, withPlaceholder: true },
+    { source: Track.Source.ScreenShare, withPlaceholder: false },
   ]).filter((track) => track.participant.identity === hostIdentity);
   
   let content;
