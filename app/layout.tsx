@@ -6,6 +6,9 @@ import { Toaster } from "sonner";
 import "./globals.css";
 import AgeConsentDialog from "@/components/entry-modal";
 import { FilterProvider } from "./providers/use-filters";
+import { CategoryProvider } from "./providers/use-categories";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -41,7 +44,11 @@ export default function RootLayout({
             position="bottom-center"
           />
           <AgeConsentDialog />
-          <FilterProvider>{children}</FilterProvider>
+          <Suspense fallback={<Loading/>}>
+            <CategoryProvider>
+              <FilterProvider>{children}</FilterProvider>
+            </CategoryProvider>
+          </Suspense>
         </body>
       </html>
     </ClerkProvider>

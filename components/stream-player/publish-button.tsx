@@ -62,13 +62,6 @@ export default function StreamController({
         // Create actual tracks for streaming
         const tracks = await room.localParticipant.createTracks({
           audio: true,
-          video: {
-            resolution: {
-              width: 1280,
-              height: 720,
-              frameRate: 30,
-            }
-          }
         });
 
         // Publish all tracks

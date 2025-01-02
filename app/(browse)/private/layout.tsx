@@ -5,7 +5,7 @@ import FilterSections from "../_components/filters-sidebar";
 import Container from "../_components/container";
 import Categorybar, { CategoryContainer } from "@/components/navbar/category-bar";
 
-const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
+const PrivateLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div>
       <div>
@@ -22,4 +22,4 @@ const BrowseLayout = ({ children }: { children: React.ReactNode }) => {
   );
 };
 
-export default BrowseLayout;
+export default PrivateLayout;

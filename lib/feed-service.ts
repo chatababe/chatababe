@@ -1,7 +1,29 @@
 import { db } from "@/lib/db";
 import { getSelf } from "@/lib/auth-service";
 
-export const getStreams = async () => {
+const filters ={
+  id: true,
+  user: {
+    select: {
+      id: true,
+      username: true,
+      imageUrl: true,
+      profile: {
+        select: {
+          age: true,
+        },
+      },
+    },
+  },
+  isLive: true,
+  name: true,
+  thumbnailUrl: true,
+  goalText: true,
+  type: true,
+  tags: true,
+}
+
+export const getStreams = async (category:string) => {
   let userId;
 
   try {
@@ -29,28 +51,14 @@ export const getStreams = async () => {
           userId: userId,
         },
       },
-      select: {
-        id: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            imageUrl: true,
-            externalUserId: true,
-            profile: {
-              select: {
-                age: true,
-              },
-            },
-          },
-        },
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-        tags: true,
-      },
+      ...(category && {
+        where: {
+          type: {
+            equals: category
+          }
+        }
+      }),
+      select: filters,
       orderBy: [
         {
           isLive: "desc",
@@ -62,28 +70,7 @@ export const getStreams = async () => {
     });
   } else {
     streams = await db.stream.findMany({
-      select: {
-        id: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            imageUrl: true,
-            externalUserId: true,
-            profile: {
-              select: {
-                age: true,
-              },
-            },
-          },
-        },
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-        tags: true,
-      },
+      select: filters,
       orderBy: [
         {
           isLive: "desc",
@@ -120,6 +107,11 @@ export const getFollowingStreams = async () => {
           id: true,
           username: true,
           imageUrl: true,
+          profile:{
+            select:{
+              age:true
+            }
+          },
           stream: {
             select: {
               id: true,
@@ -128,6 +120,7 @@ export const getFollowingStreams = async () => {
               thumbnailUrl: true,
               goalText: true,
               type: true,
+              tags:true,
             },
           },
         },
@@ -142,12 +135,15 @@ export const getFollowingStreams = async () => {
         id: follow.following.id,
         username: follow.following.username,
         imageUrl: follow.following.imageUrl,
+        profile:{
+          age:follow.following.profile?.age
+        }
       },
       ...follow.following.stream,
     }));
 };
 
-export const getPrivateStreams = async () => {
+export const getPrivateStreams = async (category:string) => {
   let userId;
 
   try {
@@ -174,18 +170,17 @@ export const getPrivateStreams = async () => {
           },
         },
         NOT: {
-          userId: userId, // Exclude the current user's own stream
+          userId: userId,
         },
       },
-      select: {
-        id: true,
-        user: true,
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-      },
+      ...(category && {
+        where: {
+          type: {
+            equals: category
+          }
+        }
+      }),
+      select: filters,
       orderBy: [
         {
           isLive: "desc",
@@ -200,15 +195,7 @@ export const getPrivateStreams = async () => {
       where: {
         isPublic: false,
       },
-      select: {
-        id: true,
-        user: true,
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-      },
+      select: filters,
       orderBy: [
         {
           isLive: "desc",
@@ -223,7 +210,7 @@ export const getPrivateStreams = async () => {
   return streams;
 };
 
-export const getRandomStreams = async () => {
+export const getRandomStreams = async (category:string) => {
   let streams = [];
 
   streams = await db.stream.findMany({
@@ -231,26 +218,25 @@ export const getRandomStreams = async () => {
     where: {
       isLive: true,
     },
+    ...(category && {
+      where: {
+        type: {
+          equals: category
+        }
+      }
+    }),
     orderBy: [
       {
         updatedAt: "desc",
       },
     ],
-    select: {
-      id: true,
-      user: true,
-      isLive: true,
-      name: true,
-      thumbnailUrl: true,
-      goalText: true,
-      type: true,
-    },
+    select: filters,
   });
 
   return streams;
 };
 
-export const getStreamsByStreamCategory = async (category: string) => {
+export const getStreamsByStreamCategory = async (category: string, gender:string) => {
   let userId;
 
   try {
@@ -260,34 +246,34 @@ export const getStreamsByStreamCategory = async (category: string) => {
     userId = null;
   }
 
-  let filters = {};
+  let filtersCategory = {};
 
   switch (category) {
     // Available Private Shows
     case "6 Tokens per Minute":
-      filters = { tokenRate: { equals: 6 } };
+      filtersCategory = { tokenRate: { equals: 6 } };
       break;
     case "12-18 Tokens per Minute":
-      filters = { tokenRate: { gte: 12, lte: 18 } };
+      filtersCategory = { tokenRate: { gte: 12, lte: 18 } };
       break;
     case "30-42 Tokens per Minute":
-      filters = { tokenRate: { gte: 30, lte: 42 } };
+      filtersCategory = { tokenRate: { gte: 30, lte: 42 } };
       break;
     case "60-72 Tokens per Minute":
-      filters = { tokenRate: { gte: 60, lte: 72 } };
+      filtersCategory = { tokenRate: { gte: 60, lte: 72 } };
       break;
     case "90+ Tokens per Minute":
-      filters = { tokenRate: { gte: 90 } };
+      filtersCategory = { tokenRate: { gte: 90 } };
       break;
 
     // Free Cams by Status
     case "Private Shows":
-      filters = { isPublic: false };
+      filtersCategory = { isPublic: false };
       break;
     case "New Cams":
       const oneHourAgo = new Date();
       oneHourAgo.setHours(oneHourAgo.getHours() - 1);
-      filters = { updatedAt: { gte: oneHourAgo } };
+      filtersCategory = { updatedAt: { gte: oneHourAgo } };
       break;
 
     default:
@@ -295,8 +281,15 @@ export const getStreamsByStreamCategory = async (category: string) => {
   }
 
   const streams = await db.stream.findMany({
+    ...(category && {
+      where: {
+        type: {
+          equals: gender
+        }
+      }
+    }),
     where: {
-      ...filters,
+      ...filtersCategory,
       isLive: true,
       ...(userId && {
         user: {
@@ -313,22 +306,14 @@ export const getStreamsByStreamCategory = async (category: string) => {
         },
       }),
     },
-    select: {
-      id: true,
-      user: true,
-      isLive: true,
-      name: true,
-      thumbnailUrl: true,
-      goalText: true,
-      type: true,
-    },
+    select: filters,
     orderBy: [{ isLive: "desc" }, { updatedAt: "desc" }],
   });
 
   return streams;
 };
 
-export const getStreamsByUserCategory = async (category: string) => {
+export const getStreamsByUserCategory = async (category: string,gender:string) => {
   let userId;
 
   try {
@@ -338,41 +323,41 @@ export const getStreamsByUserCategory = async (category: string) => {
     userId = null;
   }
 
-  let filters = {};
+  let filtersCategory = {};
 
   switch (category) {
     // Free Cams by Age
     case "Teen Cams":
-      filters = { age: { lte: 19 } };
+      filtersCategory = { age: { lte: 19 } };
       break;
     case "18 to 21 cams":
-      filters = { age: { gte: 18, lte: 21 } };
+      filtersCategory = { age: { gte: 18, lte: 21 } };
       break;
     case "20 to 30 cams":
-      filters = { age: { gte: 20, lte: 30 } };
+      filtersCategory = { age: { gte: 20, lte: 30 } };
       break;
     case "30 to 50 cams":
-      filters = { age: { gte: 30, lte: 50 } };
+      filtersCategory = { age: { gte: 30, lte: 50 } };
       break;
     case "Mature cams":
-      filters = { age: "mature" };
+      filtersCategory = { age: "mature" };
       break;
 
     // Free Cams by Region
     case "North American Cams":
-      filters = { location: "North America" };
+      filtersCategory = { location: "North America" };
       break;
     case "South American Cams":
-      filters = { location: "South America" };
+      filtersCategory = { location: "South America" };
       break;
     case "Euro Russian Cams":
-      filters = { location: { in: ["Europe", "Russia"] } };
+      filtersCategory = { location: { in: ["Europe", "Russia"] } };
       break;
     case "Asian Cams":
-      filters = { locationn: "Asia" };
+      filtersCategory = { locationn: "Asia" };
       break;
     case "Other Regions":
-      filters = {
+      filtersCategory = {
         location: {
           notIn: ["North America", "South America", "Europe", "Russia", "Asia"],
         },
@@ -380,16 +365,16 @@ export const getStreamsByUserCategory = async (category: string) => {
       break;
 
     case "Female Cams":
-      filters = { gender: "female" };
+      filtersCategory = { gender: "female" };
       break;
     case "Male Cams":
-      filters = { gender: "male" };
+      filtersCategory = { gender: "male" };
       break;
     case "Couple Cams":
-      filters = { gender: "couple" };
+      filtersCategory = { gender: "couple" };
       break;
     case "Trans Cams":
-      filters = { gender: "trans" };
+      filtersCategory = { gender: "trans" };
       break;
 
     default:
@@ -397,12 +382,19 @@ export const getStreamsByUserCategory = async (category: string) => {
   }
 
   const streams = await db.stream.findMany({
+    ...(category && {
+      where: {
+        type: {
+          equals: gender
+        }
+      }
+    }),
     where: {
       isLive: true,
       ...(userId && {
         user: {
           profile: {
-            ...filters,
+            ...filtersCategory,
           },
           NOT: {
             blocking: {
@@ -417,15 +409,7 @@ export const getStreamsByUserCategory = async (category: string) => {
         },
       }),
     },
-    select: {
-      id: true,
-      user: true,
-      isLive: true,
-      name: true,
-      thumbnailUrl: true,
-      goalText: true,
-      type: true,
-    },
+    select: filters,
     orderBy: [{ isLive: "desc" }, { updatedAt: "desc" }],
   });
 
@@ -446,8 +430,8 @@ export const getStreamByTags = async ({
     userId = null;
   }
   // Filter out undefined values and ensure string type
-  const tags: string[] = [country, genre, room, year].filter((tag): tag is string => 
-    typeof tag === 'string' && tag.length > 0
+  const tags: string[] = [country, genre, room, year].filter(
+    (tag): tag is string => typeof tag === "string" && tag.length > 0
   );
   let streams = [];
   if (userId) {
@@ -455,8 +439,8 @@ export const getStreamByTags = async ({
       where: {
         ...(tags.length > 0 && {
           tags: {
-            hasSome: tags
-          }
+            hasSome: tags,
+          },
         }),
         user: {
           NOT: {
@@ -471,28 +455,7 @@ export const getStreamByTags = async ({
           userId: userId,
         },
       },
-      select: {
-        id: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            imageUrl: true,
-            externalUserId: true,
-            profile: {
-              select: {
-                age: true,
-              },
-            },
-          },
-        },
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-        tags: true,
-      },
+      select: filters,
       orderBy: [
         {
           isLive: "desc",
@@ -504,28 +467,7 @@ export const getStreamByTags = async ({
     });
   } else {
     streams = await db.stream.findMany({
-      select: {
-        id: true,
-        user: {
-          select: {
-            id: true,
-            username: true,
-            imageUrl: true,
-            externalUserId: true,
-            profile: {
-              select: {
-                age: true,
-              },
-            },
-          },
-        },
-        isLive: true,
-        name: true,
-        thumbnailUrl: true,
-        goalText: true,
-        type: true,
-        tags: true,
-      },
+      select: filters,
       orderBy: [
         {
           isLive: "desc",

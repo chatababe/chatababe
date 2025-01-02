@@ -94,7 +94,7 @@ const FilterSections: React.FC = () => {
               onClick={() => handleFilterSelect("genre", genre)}
               className={cn(
                 "px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors",
-                isFilterSelected("genre", genre) && "bg-n-4/30 border-n-4"
+                isFilterSelected("genre", genre) && "bg-primary-2 border-0 text-n-5 hover:bg-primary-2 hover:border-0"
               )}
             >
               {genre}

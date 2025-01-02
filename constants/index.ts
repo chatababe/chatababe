@@ -23,15 +23,15 @@ export const navigation = [
 export const categories = [
   {
     id: 0,
-    title: "Featured",
+    title: "featured",
   },
   {
     id: 1,
-    title: "Men",
+    title: "men",
   },
   {
     id: 2,
-    title: "Women",
+    title: "women",
   },
   {
     id: 3,

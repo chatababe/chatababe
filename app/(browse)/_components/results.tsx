@@ -1,15 +1,27 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultCard, { ResultCardSkeleton } from "./result-card";
-import { getStreamByTags, getStreams } from "@/lib/feed-service";
+import { getStreamByTags} from "@/lib/feed-service";
 import Logo from "@/components/logo";
 
-interface ResultsProps{
-  tags:  FilterTags;
-}
+type FetchFunction = (tags?: {
+  type?:string,
+  country?: string;
+  genre?: string;
+  room?: string;
+  year?: string;
+}) => Promise<StreamsProps[]>;
 
-//fix async params
-const Results = async ({ tags }: ResultsProps) => {
-  let data = await getStreams();
+interface ResultsProps {
+  tags: {
+    country?: string;
+    genre?: string;
+    room?: string;
+    year?: string;
+  };
+  fetchData: FetchFunction;
+}
+const Results = async ({tags,fetchData }: ResultsProps) => {
+  let data = await fetchData();
   const {country,genre,room,year} = tags
   if(country || genre || room || year){
     data = await getStreamByTags({country, genre, room, year});

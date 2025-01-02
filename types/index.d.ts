@@ -29,17 +29,35 @@ interface Stream {
 }
 
 interface PageProps {
-  searchParams: {
-    year?: string;
+  searchParams: Promise<{
+    type?: string;
+    year?: string; 
     room?: string;
     genre?: string;
     country?: string;
-  }
-}
-declare type AsyncPageProps = Promise<PageProps>;
+  }>
+ }
+
 interface FilterTags {
   year?: string;
   room?: string;
   genre?: string;
   country?: string;
+}
+interface StreamsProps {
+  id: string;
+  name: string;
+  type: string | null;
+  tags: string[];
+  user: {
+    id: string;
+    profile: {
+      age: number;
+    } | null;
+    username: string;
+    imageUrl: string;
+  };
+  thumbnailUrl: string | null;
+  goalText: string | null;
+  isLive: boolean;
 }
