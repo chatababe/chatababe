@@ -1,4 +1,4 @@
-"use client";
+"use client"
 
 import { LiveKitRoom } from "@livekit/components-react";
 
@@ -56,14 +56,10 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
     return <StreamPlayerSkeleton />;
   }
 
-  const isHost = identity.startsWith("host");
-
   return (
     <>
       <LiveKitRoom
         token={token}
-        video={isHost}
-        audio={isHost}
         serverUrl={process.env.NEXT_PUBLIC_LIVEKIT_WS_URL}
         className={cn(
           "pl-4 grid grid-cols-4 lg:gap-y-0 lg:grid-cols-4 xl:grid-cols-4 2xl:grid-cols-6",
@@ -71,7 +67,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
         )}
       >
         <div className="space-y-4 col-span-full lg:col-span-3 xl:col-span-3 2xl:col-span-5 lg:overflow-y-auto hidden-scrollbar pb-4 border-l  border-b ">
-          <Video hostName={user.username} hostIdentity={user.id} />
+          <Video hostName={user.username} hostIdentity={`host-${user.id}`} />
           <Header
             hostName={user.username}
             hostIdentity={user.id}
@@ -79,6 +75,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
             imageUrl={user.imageUrl}
             isFollowing={isFollowing}
             name={stream.name}
+            live={stream.isLive}
           />
         </div>
         <div
@@ -92,6 +89,7 @@ const StreamPlayer = ({ user, stream, isFollowing }: StreamPlayerProps) => {
             hostName={user.username}
             hostIdentity={user.id}
             isFollowing={isFollowing}
+            isLive={stream.isLive}
             isChatEnabled={stream.isChatEnabled}
             isChatDelayed={stream.isChatDelayed}
             isChatFollowersOnly={stream.isChatFollowersOnly}

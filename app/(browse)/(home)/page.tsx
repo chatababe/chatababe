@@ -1,15 +1,13 @@
-import Results from "./_components/results";
-import { CategoryProvider } from "./_components/category-provider";
-import ResultsWrapper from "./_components/Results-wrapper";
+import { Suspense } from "react";
+
+import Results, { ResultsSkeleton } from "../(home)/_components/results";
 
 export default function RootPage() {
   return (
     <div className="h-full">
-      <CategoryProvider>
-        <ResultsWrapper>
-          <Results />
-        </ResultsWrapper>
-      </CategoryProvider>
+      <Suspense fallback={<ResultsSkeleton />}>
+        <Results category="Featured"/>
+      </Suspense>
     </div>
   );
 }

@@ -10,9 +10,9 @@ type User = {
   id: string;
   username: string;
   imageUrl: string;
-  externalUserId: string;
-  createdAt: Date;
-  updatedAt: Date;
+  profile:{
+    age:number;
+  } | null;
 };
 
 interface ResultCardProps {
@@ -22,12 +22,12 @@ interface ResultCardProps {
     name: string;
     thumbnailUrl: string | null;
     goalText: string | null;
-    type: string  | null;
+    type: string | null;
+    tags: string[] | null;
   };
 }
 
-const ResultCard = async({ data }: ResultCardProps) => {
-
+const ResultCard = async ({ data }: ResultCardProps) => {
   return (
     <Link href={`/${data.user.username}`}>
       <div className="h-full w-full space-y-2 border border-n-3/40 rounded-lg pb-2">
@@ -42,12 +42,23 @@ const ResultCard = async({ data }: ResultCardProps) => {
             {data.user.username}
           </p>
           <div className="flex items-center gap-2 ml-auto">
-            <UserIcon type={data?.type || "female"}/>
+            <p className="font-medium text-xs text-n-1">{data.user.profile?.age}</p>
+            <UserIcon type={data?.type || "female"} />
           </div>
         </div>
         <div className="flex flex-col mx-2 py-1">
-          {/* goal */}
-          <p className="text-[11px] text-n-1 leading-4 mb-2">{data?.goalText}</p>
+          <p className="text-xs text-n-1 leading-4">
+            {data?.goalText}
+          </p>
+        </div>
+        <div className="flex flex-col mx-2">
+          <div className="flex flex-wrap gap-2 mx-2">
+            {data?.tags?.map((item) => (
+              <p key={item} className="text-[11px] text-primary-2 leading-4">
+                {`#${item}`}
+              </p>
+            ))}
+          </div>
         </div>
       </div>
     </Link>

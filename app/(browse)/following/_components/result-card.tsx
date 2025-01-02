@@ -10,19 +10,17 @@ type User = {
   id: string;
   username: string;
   imageUrl: string;
-  externalUserId: string;
-  createdAt: Date;
-  updatedAt: Date;
 };
 
 interface ResultCardProps {
   data: {
     user: User;
-    isLive: boolean;
-    name: string;
-    thumbnailUrl: string | null;
-    goalText: string | null;
-    type: string  | null;
+    id?:string,
+    isLive?: boolean;
+    name?: string;
+    thumbnailUrl?: string | null;
+    goalText?: string | null;
+    type?: string  | null;
   };
 }
 
@@ -32,9 +30,9 @@ const ResultCard = async({ data }: ResultCardProps) => {
     <Link href={`/${data.user.username}`}>
       <div className="h-full w-full space-y-2 border border-n-3/40 rounded-lg pb-2">
         <Thumbnail
-          src={data.thumbnailUrl}
+          src={data.thumbnailUrl||""}
           fallback={data.user.imageUrl}
-          isLive={data.isLive}
+          isLive={data.isLive||false}
           username={data.user.username}
         />
         <div className="flex gap-x-3 mx-2 py-1 border-b border-n-3/40">

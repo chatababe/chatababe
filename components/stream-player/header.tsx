@@ -22,6 +22,7 @@ interface HeaderProps {
   viewerIdentity: string;
   isFollowing: boolean;
   name: string;
+  live:boolean;
 }
 
 const Header = ({
@@ -30,12 +31,13 @@ const Header = ({
   hostIdentity,
   viewerIdentity,
   isFollowing,
+  live,
 }: HeaderProps) => {
   const participants = useParticipants();
-  const participant = useRemoteParticipant(hostIdentity);
+  const participant = useRemoteParticipant(`host-${hostIdentity}`);
   const { collapsed } = useChatSidebar((state) => state);
 
-  const isLive = !!participant;
+  const isLive = !!participant && live;
   const participantCount = participants.length - 1;
 
   const hostAsViewer = `host-${hostIdentity}`;

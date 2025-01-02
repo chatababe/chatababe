@@ -31,12 +31,25 @@ export const getStreams = async () => {
       },
       select: {
         id: true,
-        user: true,
+        user: {
+          select:{
+            id: true,
+            username: true,
+            imageUrl: true,
+            externalUserId: true,
+            profile:{
+              select:{
+                age:true
+              }
+            }
+          }
+        },
         isLive: true,
         name: true,
         thumbnailUrl: true,
         goalText: true,
         type: true,
+        tags:true,
       },
       orderBy: [
         {
@@ -51,12 +64,25 @@ export const getStreams = async () => {
     streams = await db.stream.findMany({
       select: {
         id: true,
-        user: true,
+        user: {
+          select:{
+            id: true,
+            username: true,
+            imageUrl: true,
+            externalUserId: true,
+            profile:{
+              select:{
+                age:true
+              }
+            }
+          }
+        },
         isLive: true,
         name: true,
         thumbnailUrl: true,
         goalText: true,
         type: true,
+        tags:true,
       },
       orderBy: [
         {
@@ -94,11 +120,9 @@ export const getFollowingStreams = async () => {
           id: true,
           username: true,
           imageUrl: true,
-          externalUserId: true,
-          createdAt: true,
-          updatedAt: true,
           stream: {
             select: {
+              id:true,
               isLive: true,
               name: true,
               thumbnailUrl: true,
@@ -118,9 +142,6 @@ export const getFollowingStreams = async () => {
         id: follow.following.id,
         username: follow.following.username,
         imageUrl: follow.following.imageUrl,
-        externalUserId: follow.following.externalUserId,
-        createdAt: follow.following.createdAt,
-        updatedAt: follow.following.updatedAt,
       },
       ...follow.following.stream,
     }));

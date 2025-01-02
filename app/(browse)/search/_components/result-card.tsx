@@ -20,7 +20,7 @@ interface ResultCardProps {
 const ResultCard = ({ data }: ResultCardProps) => {
   return (
     <Link href={`/${data.user.username}`}>
-      <div className="w-full flex gap-x-4">
+      <div className="w-full flex flex-col gap-x-4">
         <div className="relative h-[9rem] w-[16rem]">
           <Thumbnail
             src={data.thumbnailUrl}
@@ -36,7 +36,6 @@ const ResultCard = ({ data }: ResultCardProps) => {
             </p>
             <VerifiedMark />
           </div>
-          <p className="text-sm text-n-3">{data.name}</p>
           <p className="text-sm text-n-3">
             {formatDistanceToNow(new Date(data.updatedAt), {
               addSuffix: true,

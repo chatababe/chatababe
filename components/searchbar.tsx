@@ -10,10 +10,10 @@ const SearchInput = () => {
 
   const [isInputVisible, setIsInputVisible] = useState(false);
   const [value, setValue] = useState("");
-  
+
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!value) return;
+    if (!value.trim()) return;
     const url = qs.stringifyUrl(
       {
         url: "/search",
@@ -35,9 +35,9 @@ const SearchInput = () => {
   return (
     <div className="relative flex items-center">
       {isInputVisible ? (
-        <form 
-        className="flex items-center border border-n-4/60 rounded-lg py-2 w-48 h-7 transition-all duration-300 origin-right"
-        onSubmit={onSubmit}
+        <form
+          className="flex items-center border border-n-4/60 rounded-lg py-2 w-48 h-7 transition-all duration-300 origin-right"
+          onSubmit={onSubmit}
         >
           <input
             value={value}
@@ -54,7 +54,8 @@ const SearchInput = () => {
             placeholder="Search..."
           />
           <button
-            onClick={value ? onClear : toggleInput}
+            type="reset"
+            onClick={!value ? toggleInput : onClear}
             className="flex items-center justify-center mr-2"
           >
             <X size={16} color="#2563eb" className="cursor-pointer" />

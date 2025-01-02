@@ -11,7 +11,7 @@ const Results = async ({ term }: ResultsProps) => {
   const data = await getSearch(term);
 
   return (
-    <div>
+    <div className="mb-20 px-6">
       <h2 className="text-lg font-semibold mb-4">
         Results for &quot;{term}&quot;
       </h2>
@@ -20,7 +20,7 @@ const Results = async ({ term }: ResultsProps) => {
           No results found. Try searching for someone else.
         </p>
       )}
-      <div className="flex flex-col gap-y-4">
+      <div className="grid grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
         {data.map((result) => (
           <ResultCard
             data={result}

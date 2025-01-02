@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function POST(request: Request) {
   const { feedbackType, subject, description, email } = await request.json();
-
+  
   if (!feedbackType || !subject || !description) {
     return NextResponse.json({ message: 'Missing required fields' }, { status: 400 });
   }

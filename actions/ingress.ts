@@ -60,6 +60,9 @@ export const createIngress = async (ingressType: IngressInput) => {
     throw new Error("Failed to create ingress");
   }
 
+  const stream = await db.stream.findUnique({where:{userId:self.id}})
+  if(!stream) throw new Error('Stream not found')
+
   await db.stream.update({
     where: { userId: self.id },
     data: {

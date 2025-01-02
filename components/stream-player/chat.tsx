@@ -25,6 +25,7 @@ interface ChatProps {
   hostIdentity: string;
   viewerName: string;
   isFollowing: boolean;
+  isLive:boolean,
   isChatEnabled: boolean;
   isChatDelayed: boolean;
   isChatFollowersOnly: boolean;
@@ -35,6 +36,7 @@ const Chat = ({
   hostIdentity,
   viewerName,
   isFollowing,
+  isLive,
   isChatEnabled,
   isChatDelayed,
   isChatFollowersOnly,
@@ -45,9 +47,9 @@ const Chat = ({
 
   const { variant, onExpand } = useChatSidebar((state) => state);
   const connectionState = useConnectionState();
-  const participant = useRemoteParticipant(hostIdentity);
+  const participant = useRemoteParticipant(`host-${hostIdentity}`);
 
-  const isOnline = participant && connectionState === ConnectionState.Connected;
+  const isOnline = participant && connectionState === ConnectionState.Connected && isLive;
   const isHidden = !isChatEnabled || !isOnline;
 
   const [value, setValue] = useState("");

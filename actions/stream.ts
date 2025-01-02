@@ -27,7 +27,7 @@ export const updateStream = async (values: Partial<Stream>) => {
       isChatEnabled: values.isChatEnabled,
       isChatFollowersOnly: values.isChatFollowersOnly,
       isChatDelayed: values.isChatDelayed,
-      tags:values.tags
+      tags: values.tags,
     };
 
     const stream = await db.stream.update({
@@ -72,10 +72,10 @@ export const createStream = async (values: Partial<Stream>) => {
       isPublic: values.isPublic || true,
       tags: values.tags,
     };
-    
+
     const stream = await db.stream.upsert({
       where: {
-        userId: self.id
+        userId: self.id,
       },
       create: {
         userId: self.id,
@@ -104,17 +104,17 @@ export const createStream = async (values: Partial<Stream>) => {
 export const createInitialStream = async () => {
   try {
     const self = await getSelf();
-    console.log(self)
+    console.log(self);
     if (!self) {
       throw new Error("User not authenticated");
     }
 
     const stream = await db.stream.create({
-      data:{
-        userId:self.id,
-        name:`${self.username}'s stream`
-      }
-    })
+      data: {
+        userId: self.id,
+        name: `${self.username}'s stream`,
+      },
+    });
 
     // Revalidate relevant paths
     const pathsToRevalidate = [
@@ -128,4 +128,52 @@ export const createInitialStream = async () => {
   } catch {
     throw new Error("Internal Error");
   }
+};
+
+export const startStream = async () => {
+  const self = await getSelf();
+
+  if (!self) throw new Error("User not authenticated");
+
+  const selfStream = await db.stream.findUnique({
+    where: { userId: self.id },
+  });
+  if (!selfStream) throw new Error("Stream not available");
+
+  const stream = await db.stream.update({
+    where: { id: selfStream.id },
+    data: {
+      isLive: true,
+      updatedAt: new Date(),
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath(`/${self.username}`);
+  revalidatePath(`/u/${self.username}/stream`);
+
+  return stream;
+};
+export const endStream = async () => {
+  const self = await getSelf();
+  if (!self) throw new Error("User not authenticated");
+
+  const selfStream = await db.stream.findUnique({
+    where: { userId: self.id },
+  });
+  if (!selfStream) throw new Error("Stream not available");
+
+  const stream = await db.stream.update({
+    where: { id: selfStream.id },
+    data: {
+      isLive: false,
+      updatedAt: new Date(),
+    },
+  });
+
+  revalidatePath("/");
+  revalidatePath(`/${self.username}`);
+  revalidatePath(`/u/${self.username}/stream`);
+
+  return stream;
 };

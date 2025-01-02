@@ -1,20 +1,29 @@
-"use client"
+"use client";
 
-import React, { useState } from 'react';
-import { Card, CardHeader, CardTitle, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { toast } from 'sonner';
+import React, { useState } from "react";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardContent,
+} from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
 
 export default function FeedbackPage() {
   const [formData, setFormData] = useState({
-    feedbackType: 'General Feedback',
-    subject: '',
-    description: '',
-    email: '',
+    feedbackType: "General Feedback",
+    subject: "",
+    description: "",
+    email: "",
   });
   const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
+  ) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
@@ -24,26 +33,26 @@ export default function FeedbackPage() {
     setLoading(true);
 
     try {
-      const response = await fetch('/api/send-feedback', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+      const response = await fetch("/api/send-feedback", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       });
 
       if (response.ok) {
-        toast.success('Feedback sent successfully!');
+        toast.success("Feedback sent successfully!");
         setFormData({
-          feedbackType: 'General Feedback',
-          subject: '',
-          description: '',
-          email: '',
+          feedbackType: "General Feedback",
+          subject: "",
+          description: "",
+          email: "",
         });
       } else {
-        toast.error('Failed to send feedback. Please try again later.');
+        toast.error("Failed to send feedback. Please try again later.");
       }
     } catch (error) {
-      console.error('Error submitting feedback:', error);
-      toast.error('An error occurred. Please try again.');
+      console.error("Error submitting feedback:", error);
+      toast.error("An error occurred. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -106,13 +115,15 @@ export default function FeedbackPage() {
                 placeholder="For follow-up if needed"
               />
             </div>
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={loading}
+            >
+              {loading ? "Sending..." : "Submit Feedback"}
+            </Button>
           </form>
         </CardContent>
-        <CardFooter>
-          <Button type="submit" className="w-full" disabled={loading}>
-            {loading ? 'Sending...' : 'Submit Feedback'}
-          </Button>
-        </CardFooter>
       </Card>
     </div>
   );
