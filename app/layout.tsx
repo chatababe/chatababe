@@ -5,6 +5,7 @@ import { Toaster } from "sonner";
 
 import "./globals.css";
 import AgeConsentDialog from "@/components/entry-modal";
+import { FilterProvider } from "./providers/use-filters";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -24,7 +25,12 @@ export default function RootLayout({
     >
       <html lang="en">
         <head>
-          <link rel="icon" type="image/png" sizes="32x32" href="/assets/icons/favicon.jpg" />
+          <link
+            rel="icon"
+            type="image/png"
+            sizes="32x32"
+            href="/assets/icons/favicon.jpg"
+          />
         </head>
         <body className={inter.className}>
           <Toaster
@@ -35,7 +41,7 @@ export default function RootLayout({
             position="bottom-center"
           />
           <AgeConsentDialog />
-          {children}
+          <FilterProvider>{children}</FilterProvider>
         </body>
       </html>
     </ClerkProvider>

@@ -3,7 +3,6 @@
 import SearchInput from "@/components/searchbar";
 import { categories } from "@/constants";
 import { ListFilter } from "lucide-react";
-import React from "react";
 import { useFilterSidebar } from "@/store/use-filter-sidebar";
 import { useCategoryNavbar } from "@/store/use-category-navbar";
 import { cn } from "@/lib/utils";
@@ -73,7 +72,12 @@ export const CategoryContainer = () => {
             key={item.id}
             onClick={() => setCategory(item.title)}
           >
-            <p className={cn("text-xs font-semibold uppercase text-n-3",selectedCategory === item.title && "text-n-5")}>
+            <p
+              className={cn(
+                "text-xs font-semibold uppercase text-n-3",
+                selectedCategory === item.title && "text-n-5"
+              )}
+            >
               {item.title}
             </p>
           </button>

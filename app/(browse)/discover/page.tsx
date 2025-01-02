@@ -1,12 +1,13 @@
 import { Suspense } from "react";
 
-import Results, { ResultsSkeleton } from "../(home)/_components/results";
+import Results, { ResultsSkeleton } from "../_components/results";
 
-export default function RootPage() {
+export default async function RootPage(params:AsyncPageProps) {
+  const {searchParams} = await params;
   return (
     <div className="h-full">
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results category="Featured"/>
+        <Results tags={searchParams}/>
       </Suspense>
     </div>
   );

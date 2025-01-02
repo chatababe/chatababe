@@ -32,24 +32,24 @@ export const getStreams = async () => {
       select: {
         id: true,
         user: {
-          select:{
+          select: {
             id: true,
             username: true,
             imageUrl: true,
             externalUserId: true,
-            profile:{
-              select:{
-                age:true
-              }
-            }
-          }
+            profile: {
+              select: {
+                age: true,
+              },
+            },
+          },
         },
         isLive: true,
         name: true,
         thumbnailUrl: true,
         goalText: true,
         type: true,
-        tags:true,
+        tags: true,
       },
       orderBy: [
         {
@@ -65,24 +65,24 @@ export const getStreams = async () => {
       select: {
         id: true,
         user: {
-          select:{
+          select: {
             id: true,
             username: true,
             imageUrl: true,
             externalUserId: true,
-            profile:{
-              select:{
-                age:true
-              }
-            }
-          }
+            profile: {
+              select: {
+                age: true,
+              },
+            },
+          },
         },
         isLive: true,
         name: true,
         thumbnailUrl: true,
         goalText: true,
         type: true,
-        tags:true,
+        tags: true,
       },
       orderBy: [
         {
@@ -122,7 +122,7 @@ export const getFollowingStreams = async () => {
           imageUrl: true,
           stream: {
             select: {
-              id:true,
+              id: true,
               isLive: true,
               name: true,
               thumbnailUrl: true,
@@ -163,7 +163,7 @@ export const getPrivateStreams = async () => {
     streams = await db.stream.findMany({
       where: {
         isPublic: false,
-        isLive:true,
+        isLive: true,
         user: {
           NOT: {
             blocking: {
@@ -228,12 +228,12 @@ export const getRandomStreams = async () => {
 
   streams = await db.stream.findMany({
     take: 10,
-    where:{
-      isLive:true,
+    where: {
+      isLive: true,
     },
     orderBy: [
       {
-        updatedAt: "desc", 
+        updatedAt: "desc",
       },
     ],
     select: {
@@ -398,7 +398,7 @@ export const getStreamsByUserCategory = async (category: string) => {
 
   const streams = await db.stream.findMany({
     where: {
-      isLive:true,
+      isLive: true,
       ...(userId && {
         user: {
           profile: {
@@ -429,5 +429,112 @@ export const getStreamsByUserCategory = async (category: string) => {
     orderBy: [{ isLive: "desc" }, { updatedAt: "desc" }],
   });
 
+  return streams;
+};
+
+export const getStreamByTags = async ({
+  country,
+  genre,
+  room,
+  year,
+}: FilterTags) => {
+  let userId;
+  try {
+    const self = await getSelf();
+    userId = self.id;
+  } catch {
+    userId = null;
+  }
+  // Filter out undefined values and ensure string type
+  const tags: string[] = [country, genre, room, year].filter((tag): tag is string => 
+    typeof tag === 'string' && tag.length > 0
+  );
+  let streams = [];
+  if (userId) {
+    streams = await db.stream.findMany({
+      where: {
+        ...(tags.length > 0 && {
+          tags: {
+            hasSome: tags
+          }
+        }),
+        user: {
+          NOT: {
+            blocking: {
+              some: {
+                blockedId: userId,
+              },
+            },
+          },
+        },
+        NOT: {
+          userId: userId,
+        },
+      },
+      select: {
+        id: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+            externalUserId: true,
+            profile: {
+              select: {
+                age: true,
+              },
+            },
+          },
+        },
+        isLive: true,
+        name: true,
+        thumbnailUrl: true,
+        goalText: true,
+        type: true,
+        tags: true,
+      },
+      orderBy: [
+        {
+          isLive: "desc",
+        },
+        {
+          updatedAt: "desc",
+        },
+      ],
+    });
+  } else {
+    streams = await db.stream.findMany({
+      select: {
+        id: true,
+        user: {
+          select: {
+            id: true,
+            username: true,
+            imageUrl: true,
+            externalUserId: true,
+            profile: {
+              select: {
+                age: true,
+              },
+            },
+          },
+        },
+        isLive: true,
+        name: true,
+        thumbnailUrl: true,
+        goalText: true,
+        type: true,
+        tags: true,
+      },
+      orderBy: [
+        {
+          isLive: "desc",
+        },
+        {
+          updatedAt: "desc",
+        },
+      ],
+    });
+  }
   return streams;
 };

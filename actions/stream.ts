@@ -104,7 +104,6 @@ export const createStream = async (values: Partial<Stream>) => {
 export const createInitialStream = async () => {
   try {
     const self = await getSelf();
-    console.log(self);
     if (!self) {
       throw new Error("User not authenticated");
     }

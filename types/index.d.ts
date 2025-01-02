@@ -27,3 +27,19 @@ interface Stream {
   thumbnailUrl: string | null;
   name: string;
 }
+
+interface PageProps {
+  searchParams: {
+    year?: string;
+    room?: string;
+    genre?: string;
+    country?: string;
+  }
+}
+declare type AsyncPageProps = Promise<PageProps>;
+interface FilterTags {
+  year?: string;
+  room?: string;
+  genre?: string;
+  country?: string;
+}

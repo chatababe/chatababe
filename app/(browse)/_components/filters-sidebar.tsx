@@ -1,15 +1,13 @@
 "use client";
 
+import { useFilters, FilterCategory } from "@/app/providers/use-filters";
 import { regions, tags, age, rooms } from "@/constants";
 import { cn } from "@/lib/utils";
 import { useFilterSidebar } from "@/store/use-filter-sidebar";
 import React, { useState } from "react";
 
-interface FilterSectionProps {
-  onFilterSelect?: (category: string, value: string) => void;
-}
-
-const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
+const FilterSections: React.FC = () => {
+  const { filters, updateFilters } = useFilters();
   const { collapsed } = useFilterSidebar((state) => state);
   const [currentPage, setCurrentPage] = useState(1);
   const tagsPerPage = 20;
@@ -19,6 +17,20 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
     const start = (currentPage - 1) * tagsPerPage;
     const end = start + tagsPerPage;
     return tags.slice(start, end);
+  };
+
+  const handleFilterSelect = (category: FilterCategory, value: string) => {
+    // If the value is already selected, remove it
+    if (filters[category] === value) {
+      updateFilters({ [category]: undefined });
+    } else {
+      // Otherwise, set the new value
+      updateFilters({ [category]: value });
+    }
+  };
+
+  const isFilterSelected = (category: FilterCategory, value: string) => {
+    return filters[category] === value;
   };
 
   return (
@@ -37,8 +49,11 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
           {age.map((year) => (
             <button
               key={year}
-              onClick={() => onFilterSelect?.("year", year)}
-              className="px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors"
+              onClick={() => handleFilterSelect("year", year)}
+              className={cn(
+                "px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors",
+                isFilterSelected("year", year) && "bg-primary-2 border-0 text-n-5 hover:bg-primary-2 hover:border-0"
+              )}
             >
               {year}
             </button>
@@ -55,8 +70,11 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
           {rooms.map((room) => (
             <button
               key={room}
-              onClick={() => onFilterSelect?.("room", room)}
-              className="px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors"
+              onClick={() => handleFilterSelect("room", room)}
+              className={cn(
+                "px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors",
+                isFilterSelected("room", room) && "bg-primary-2 border-0 text-n-5 hover:bg-primary-2 hover:border-0"
+              )}
             >
               {room}
             </button>
@@ -69,13 +87,15 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
         <div className="flex items-center gap-2 mb-4">
           <h2 className="text-base font-semibold text-n-1">Tags</h2>
         </div>
-
         <div className="flex flex-wrap gap-2 mb-4">
           {getCurrentTags().map((genre) => (
             <button
               key={genre}
-              onClick={() => onFilterSelect?.("genre", genre)}
-              className="px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors"
+              onClick={() => handleFilterSelect("genre", genre)}
+              className={cn(
+                "px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors",
+                isFilterSelected("genre", genre) && "bg-n-4/30 border-n-4"
+              )}
             >
               {genre}
             </button>
@@ -114,8 +134,11 @@ const FilterSections: React.FC<FilterSectionProps> = ({ onFilterSelect }) => {
           {regions.map((country) => (
             <button
               key={country}
-              onClick={() => onFilterSelect?.("country", country)}
-              className="px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors"
+              onClick={() => handleFilterSelect("country", country)}
+              className={cn(
+                "px-4 py-2 text-xs bg-n-5 text-n-2/80 rounded-md border border-n-4/60 hover:bg-n-4/30 hover:border-n-4 transition-colors",
+                isFilterSelected("country", country) && "bg-n-4/30 border-n-4"
+              )}
             >
               {country}
             </button>

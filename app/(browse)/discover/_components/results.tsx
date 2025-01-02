@@ -3,10 +3,8 @@ import ResultCard, { ResultCardSkeleton } from "./result-card";
 import { getRandomStreams} from "@/lib/feed-service";
 import Logo from "@/components/logo";
 
-const Results = async ({category}:{category:string}) => {
+const Results = async () => {
   const data = await getRandomStreams();
-  const filteredData = category === "Featured" ? data : data.filter((item) => item.type === category)
-  console.log(filteredData);
   return (
     <div className="min-h-screen">
       {data.length === 0 && (
