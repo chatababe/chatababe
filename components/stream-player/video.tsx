@@ -24,6 +24,7 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   const room = useRoomContext();
   const isHost = room?.localParticipant.identity === hostIdentity;
   const participant = useRemoteParticipant(hostIdentity)
+  console.log(participant,room)
 
   let content;
 

@@ -15,26 +15,21 @@ const AgeConsentDialog = () => {
   const [isDialogOpen, setIsDialogOpen] = useState(false);
 
   useEffect(() => {
-    const hasConsented = localStorage.getItem("ageConsent");
+    const hasConsented = sessionStorage.getItem("ageConsent");
     if (!hasConsented) {
-      sessionStorage.setItem("previousTab", window.location.href);
-      if (!hasConsented) {
-        setIsDialogOpen(true); // Open dialog on the client after hydration
-      } else {
-        setIsDialogOpen(false);
-      }
+      setIsDialogOpen(true); // Open dialog on the client after hydration
+    } else {
+      setIsDialogOpen(false);
     }
   }, []);
 
   const handleConsent = () => {
-    localStorage.setItem("ageConsent", "true");
+    sessionStorage.setItem("ageConsent", "true");
     setIsDialogOpen(false);
   };
 
   const handleReject = () => {
     toast.error("You must be of legal age to enter this site.");
-    const previousTab = sessionStorage.getItem("previousTab");
-    console.log(previousTab);
     window.location.href = "/";
   };
   const handleDialogClose = (open: boolean) => {

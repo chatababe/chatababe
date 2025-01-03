@@ -41,41 +41,41 @@ export default function StreamController({
         });
 
         await endStream()
-        .then(()=>{
-          toast.success("User has ended the stream");
-        })
-        .catch(()=>{
-          toast.error("Something went wrong,User is unable to start stream")
-        })
+          .then(() => {
+            toast.success("User has ended the stream");
+          })
+          .catch(() => {
+            toast.error("Something went wrong,User is unable to start stream");
+          });
         setIsStreaming(false);
-      
       } else {
 
         const permissions = await navigator.mediaDevices.getUserMedia({
           video: true,
-          audio: true
+          audio: true,
         });
-        
+
         // Release the test tracks
-        permissions.getTracks().forEach(track => track.stop());
-        
+        permissions.getTracks().forEach((track) => track.stop());
+
         // Create actual tracks for streaming
         const tracks = await room.localParticipant.createTracks({
           audio: true,
+          video: true,
         });
 
         // Publish all tracks
         await Promise.all(
-          tracks.map(track => room.localParticipant.publishTrack(track))
+          tracks.map((track) => room.localParticipant.publishTrack(track))
         );
-        
+
         await startStream()
-        .then(()=>{
-          toast.success("User has started their stream");
-        })
-        .catch(()=>{
-          toast.error("Something went wrong,User is unable to start stream")
-        })
+          .then(() => {
+            toast.success("User has started their stream");
+          })
+          .catch(() => {
+            toast.error("Something went wrong,User is unable to start stream");
+          });
         setIsStreaming(true);
       }
     } catch (error) {

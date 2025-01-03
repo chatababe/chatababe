@@ -46,10 +46,7 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
           Thank you for your patience.
         </p>
         <Button variant="default" size="lg">
-          <Link
-            href="/"
-            className="text-n-5 font-semibold text-base"
-          >
+          <Link href="/" className="text-n-5 font-semibold text-base">
             Explore
           </Link>
         </Button>

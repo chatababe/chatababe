@@ -7,6 +7,7 @@ import {
   type CreateIngressOptions,
 } from "livekit-server-sdk";
 
+
 import { db } from "@/lib/db";
 import { getSelf } from "@/lib/auth-service";
 import { revalidatePath } from "next/cache";
@@ -17,7 +18,7 @@ const roomService = new RoomServiceClient(
   process.env.LIVEKIT_API_SECRET!
 );
 
-const ingressClient = new IngressClient(process.env.LIVEKIT_API_URL!,process.env.LIVEKIT_API_KEY!,process.env.LIVEKIT_API_SECRET!);
+const ingressClient = new IngressClient(process.env.LIVEKIT_API_URL!);
 
 export const resetIngresses = async (hostIdentity: string) => {
   const ingresses = await ingressClient.listIngress({
@@ -42,7 +43,7 @@ export const createIngress = async (ingressType: IngressInput) => {
 
   await resetIngresses(self.id);
 
-  const options:CreateIngressOptions = {
+  const options: CreateIngressOptions = {
     name: self.username,
     roomName: self.id,
     participantName: self.username,
@@ -59,9 +60,6 @@ export const createIngress = async (ingressType: IngressInput) => {
   if (!ingress || !ingress.url || !ingress.streamKey) {
     throw new Error("Failed to create ingress");
   }
-
-  const stream = await db.stream.findUnique({where:{userId:self.id}})
-  if(!stream) throw new Error('Stream not found')
 
   await db.stream.update({
     where: { userId: self.id },
