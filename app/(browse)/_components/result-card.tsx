@@ -52,7 +52,7 @@ const ResultCard = async ({ data }: ResultCardProps) => {
           </p>
         </div>
         <div className="flex flex-col mx-2">
-          <div className="flex flex-wrap gap-2 mx-2">
+          <div className="flex flex-wrap gap-2 mx-2 max-h-10 overflow-hidden truncate">
             {data?.tags?.map((item) => (
               <p key={item} className="text-[11px] text-primary-2 leading-4">
                 {`#${item}`}

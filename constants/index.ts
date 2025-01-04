@@ -145,6 +145,9 @@ export const tags = [
   "british",
   "Femdom",
   "bigpussylips",
+  "blowjob",
+  "anal-play",
+  "fingering"
 ];
 
 export const regions = [

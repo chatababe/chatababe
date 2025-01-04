@@ -17,6 +17,13 @@ const nextConfig: NextConfig = {
         pathname: '/**',
         search: '',
       },
+      {
+        protocol: 'https',
+        hostname: 'i.wlicdn.com',
+        port: '',
+        pathname: '/**',
+        search: '',
+      },
 
     ],
   },

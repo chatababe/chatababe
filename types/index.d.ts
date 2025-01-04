@@ -61,3 +61,60 @@ interface StreamsProps {
   goalText: string | null;
   isLive: boolean;
 }
+type ProfileImages = {
+  profile_image: string;
+  thumbnail_image_small: string;
+  thumbnail_image_medium: string;
+  thumbnail_image_big: string;
+};
+
+type LiveImages = {
+  thumbnail_image_medium: string;
+  thumbnail_image_big: string;
+};
+
+type Tags = {
+  [key: string]: string;
+};
+
+declare type UserSeedProfile = {
+  username: string;
+  profile_page_url: string;
+  display_name: string;
+  display_age: string;
+  profile_images: ProfileImages;
+  live_images: LiveImages;
+  chat_url: string;
+  chat_url_on_home_page: string;
+  direct_chat_url: string;
+  stream_feed_url: string;
+  online_time: number;
+  members_count: number;
+  is_vibratoy: boolean;
+  is_hd: boolean;
+  social_networks: string[]; // Array of social network names
+  gender: string;
+  hometown: string;
+  homecountry: string;
+  sexual_preference: string;
+  turns_on: string;
+  turns_off: string;
+  last_online_date: string; // ISO date string
+  region: string;
+  seven_days_live_time: number;
+  thirty_days_live_time: number;
+  height: string;
+  weight: string;
+  ethnicity: string;
+  hair_color: string;
+  eye_color: string;
+  bust_size: string;
+  butt_size: string;
+  pubic_hair: string;
+  primary_language: string;
+  secondary_language: string;
+  tags: Tags;
+};
+declare type seedData ={
+  models: UserSeedProfile[]
+}

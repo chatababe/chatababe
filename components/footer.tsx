@@ -101,7 +101,7 @@ const Footer: React.FC = () => {
   }
 
   return (
-    <footer className="bg-gradient-to-b from-primary-3/20 via-white to-white  py-8 border-t">
+    <footer className="bg-gradient-to-b from-primary-3/20 via-white to-white py-8 border-t mt-4">
       <div className="container mx-auto px-4">
         <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-8 mx-auto w-fit">
           {categories.map((category, index) => (
