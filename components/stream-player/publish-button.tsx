@@ -148,6 +148,7 @@ export default function StreamController({
   useEffect(() => {
     const handleDisconnect = () => {
       setIsStreaming(false);
+      endStream();
     };
 
     room.on(RoomEvent.Disconnected, handleDisconnect);

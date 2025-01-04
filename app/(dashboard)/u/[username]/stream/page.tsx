@@ -3,6 +3,7 @@ import StreamPlayer from "@/components/stream-player";
 import { currentUser } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import StreamModal from "@/components/stream-modal";
 
 interface CreatorPageProps {
   params: Promise<{
@@ -53,7 +54,21 @@ const CreatorPage = async ({ params }: CreatorPageProps) => {
       </div>
     );
   }
-
+  if (!user.stream.name || !user.stream.thumbnailUrl || !user.stream.goalText || !user.stream.tags) {
+    return (
+      <div className="min-h-[20rem] flex flex-col items-center justify-center text-center">
+        <p className="text-n-1 text-xl font-semibold mb-2">
+          Create your stream before starting
+        </p>
+        <p className="text-n-3 text-sm font-medium mb-4">
+          Thank you for your patience.
+        </p>
+        <Button variant="default" size="lg">
+          <StreamModal stream={user.stream} title="Create Stream"/>
+        </Button>
+      </div>
+    );
+  }
   return (
     <div className="h-full">
       <StreamPlayer user={user} stream={user.stream} isFollowing />

@@ -34,6 +34,8 @@ export const getUserByUsername = async (username: string) => {
           isChatFollowersOnly: true,
           thumbnailUrl: true,
           name: true,
+          tags:true,
+          goalText:true,
         },
       },
       _count: {

@@ -3,6 +3,7 @@ import { Label } from "@/components/ui/label";
 import { getUserByUsername } from "@/lib/user-service";
 import Image from "next/image";
 import ProfileModal from "../_components/profile-modal";
+import ManageTokensModal from "../_components/tokens-modal";
 
 interface ProfilePageProps {
   params: Promise<{
@@ -60,6 +61,7 @@ const Profile = async ({ params }: ProfilePageProps) => {
             </div>
             <div className="flex items-center gap-4">
               <ProfileModal user={userProfile} />
+              <ManageTokensModal availableTokens={user?.currentTokens}/>
             </div>
             <div></div>
           </div>

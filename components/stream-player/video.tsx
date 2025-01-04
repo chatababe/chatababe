@@ -24,7 +24,6 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   const room = useRoomContext();
   const isHost = room?.localParticipant.identity === hostIdentity;
   const participant = useRemoteParticipant(hostIdentity)
-  console.log(participant,room)
 
   let content;
 
@@ -33,7 +32,7 @@ const Video = ({ hostName, hostIdentity }: VideoProps) => {
   } else if (!participant) {
     content = <LoadingVideo label={connectionState} />;
   } else {
-    content = <LiveVideo participant={participant} />;
+    content = <LiveVideo participant={participant}/>;
   }
 
   return (

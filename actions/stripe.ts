@@ -72,3 +72,55 @@ export async function createTransaction(
     throw new Error("Unable to create transaction");
   }
 }
+
+type WithdrawalParams = {
+  amount: number;
+  credits: number;
+};
+
+export async function initiateWithdrawal(withdrawal: WithdrawalParams) {
+  const self = await getSelf();
+  if (!self) {
+    throw new Error("User not authenticated");
+  }
+
+  // 1. Check if user has enough tokens
+  const userTokens = await db.tokens.findMany({
+    where: {
+      userId: self.id,
+    },
+  });
+
+  const totalTokens = userTokens.reduce((sum, token) => sum + token.credits, 0);
+
+  if (totalTokens < withdrawal.credits) {
+    throw new Error("Insufficient tokens");
+  }
+
+  try {
+    // 2. Create withdrawal record
+    const withdrawalRecord = await db.tokens.create({
+      data: {
+        userId: self.id,
+        amount: withdrawal.amount,
+        credits: withdrawal.credits,
+      },
+    });
+
+    // 3. Deduct tokens by creating a negative token transaction
+    await db.tokens.create({
+      data: {
+        userId: self.id,
+        credits: -withdrawal.credits,
+        amount: -withdrawal.amount,
+        plan: 'Withdrawal',
+        stripeId: `withdrawal_${withdrawalRecord.id}`, // You might want to use a different ID system
+      },
+    });
+
+    return withdrawalRecord;
+  } catch (error) {
+    console.error(error);
+    throw new Error("Unable to process withdrawal");
+  }
+}

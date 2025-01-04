@@ -2,6 +2,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import { Toaster } from "sonner";
+import { Analytics } from "@vercel/analytics/react"
 
 import "./globals.css";
 import AgeConsentDialog from "@/components/entry-modal";
@@ -43,6 +44,7 @@ export default function RootLayout({
             containerAriaLabel="Toaster"
             position="bottom-center"
           />
+          <Analytics />
           <AgeConsentDialog />
           <Suspense fallback={<Loading/>}>
             <CategoryProvider>

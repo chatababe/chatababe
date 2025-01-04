@@ -12,9 +12,10 @@ interface LiveVideoProps {
   participant: Participant;
 }
 
-const LiveVideo = ({ participant }: LiveVideoProps) => {
+const LiveVideo = ({participant }: LiveVideoProps) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
+  console.log(participant)
 
   const [isFullscreen, setIsFullscreen] = useState(false);
   const [volume, setVolume] = useState(0);
@@ -65,6 +66,7 @@ const LiveVideo = ({ participant }: LiveVideoProps) => {
       if (videoRef.current) {
         track.publication.track?.attach(videoRef.current);
       }
+      console.log("Track",track)
     });
 
   return (

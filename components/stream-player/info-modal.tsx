@@ -127,7 +127,8 @@ const InfoModal = ({ initialName, initialThumbnailUrl }: InfoModalProps) => {
                     },
                     button:{
                       color: "black",
-                      fontWeight:500
+                      fontWeight:500,
+                      backgroundColor:"transparent"
                     },
                     allowedContent: {
                       color: "black",
