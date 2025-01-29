@@ -67,4 +67,7 @@ body,
   .radioGroup-indicator{
     @apply relative flex size-full items-center justify-center after:block after:size-[8px] after:rounded-full after:bg-primary-3;
   }
+  .tabsTrigger{
+    @apply rounded-lg px-3 py-2 text-sm font-medium transition-all data-[state=active]:bg-white data-[state=active]:text-primary-2 data-[state=active]:shadow-sm data-[state=active]:border data-[state=active]:border-[#D9D9D9] data-[state=active]:rounded-md
+  }
 } 

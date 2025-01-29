@@ -51,7 +51,7 @@ const SearchInput = () => {
               text-xs
               text-n-1
             "
-            placeholder="Search..."
+            placeholder="Search subjects, #tags or broadcasters"
           />
           <button
             type="reset"
@@ -67,6 +67,62 @@ const SearchInput = () => {
         </button>
       )}
     </div>
+  );
+};
+
+export const SearchBar = () => {
+  const router = useRouter();
+  const [value, setValue] = useState("");
+
+  const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (!value.trim()) return;
+    const url = qs.stringifyUrl(
+      {
+        url: "/search",
+        query: { term: value },
+      },
+      { skipEmptyString: true }
+    );
+    router.push(url);
+  };
+
+  const onClear = () => {
+    setValue("");
+  };
+
+  return (
+    <form className="relative flex flex-col space-y-1 items-center w-full" onSubmit={onSubmit}>
+      <div
+        className="flex items-center border border-n-4/60 rounded-lg py-2 w-full h-12 transition-all duration-300 origin-right"
+      >
+        <input
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          className="
+              w-full 
+              outline-none 
+              bg-transparent 
+              placeholder-n-2
+              placeholder-shown:font-medium
+              px-2
+              text-base
+              text-n-1
+            "
+          placeholder="Search subjects, #tags or broadcasters"
+        />
+        <button
+          type="reset"
+          onClick={onClear}
+          className="flex items-center justify-center mr-2"
+        >
+          <X size={24} color="#2563eb" className="cursor-pointer" />
+        </button>
+      </div>
+      <button type="submit" className="p-2 rounded-lg transition-all w-full bg-primary-3">
+        <p className="text-base text-center font-semibold text-primary-1">Search</p>
+      </button>
+    </form>
   );
 };
 

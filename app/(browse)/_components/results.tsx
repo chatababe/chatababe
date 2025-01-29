@@ -1,10 +1,13 @@
 import { Skeleton } from "@/components/ui/skeleton";
 import ResultCard, { ResultCardSkeleton } from "./result-card";
-import { getStreamByTags} from "@/lib/feed-service";
+import { getStreamByTags } from "@/lib/feed-service";
 import Logo from "@/components/logo";
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import Link from "next/link";
 
 type FetchFunction = (tags?: {
-  type?:string,
+  type?: string;
   country?: string;
   genre?: string;
   room?: string;
@@ -19,16 +22,25 @@ interface ResultsProps {
     year?: string;
   };
   fetchData: FetchFunction;
+  page?: number;
 }
-const Results = async ({tags,fetchData }: ResultsProps) => {
+const ITEMS_PER_PAGE = 6;
+
+const Results = async ({ tags, fetchData, page = 1 }: ResultsProps) => {
   let data = await fetchData();
-  const {country,genre,room,year} = tags
-  if(country || genre || room || year){
-    data = await getStreamByTags({country, genre, room, year});
+  const { country, genre, room, year } = tags;
+  if (country || genre || room || year) {
+    data = await getStreamByTags({ country, genre, room, year });
   }
 
+  const totalCount = data.length;
+  const totalPages = Math.ceil(totalCount / ITEMS_PER_PAGE);
+  const startIndex = (page - 1) * ITEMS_PER_PAGE;
+  const endIndex = startIndex + ITEMS_PER_PAGE;
+  const paginatedData = data.slice(startIndex, endIndex);
+
   return (
-    <div className="min-h-screen">
+    <div>
       {data.length === 0 && (
         <div className="flex flex-col items-center justify-center min-h-[60vh] space-y-4">
           <Logo />
@@ -36,10 +48,39 @@ const Results = async ({tags,fetchData }: ResultsProps) => {
         </div>
       )}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4 px-4 lg:px-8">
-        {data.map((result) => (
+        {paginatedData.map((result) => (
           <ResultCard key={result.id} data={result} />
         ))}
       </div>
+
+      {totalPages > 1 && (
+        <div className="flex justify-center items-center gap-2 pt-4">
+          <Link href={`?page=${page - 1}`}>
+            <Button
+              variant="outline"
+              disabled={page <= 1}
+              className="flex items-center gap-1"
+            >
+              <ChevronLeft className="w-4 h-4" />
+              Previous
+            </Button>
+          </Link>
+          <span className="text-sm text-gray-600">
+            Page {page} of {totalPages}
+          </span>
+
+          <Link href={`?page=${page + 1}`}>
+            <Button
+              variant="outline"
+              disabled={page >= totalPages}
+              className="flex items-center gap-1"
+            >
+              Next
+              <ChevronRight className="w-4 h-4" />
+            </Button>
+          </Link>
+        </div>
+      )}
     </div>
   );
 };

@@ -19,20 +19,18 @@ interface HeaderProps {
   imageUrl: string;
   hostName: string;
   hostIdentity: string;
-  viewerIdentity: string;
-  isFollowing: boolean;
   name: string;
-  live:boolean;
+  live: boolean;
+}
+interface MinHeaderProps {
+  identity:string,
+  hostName: string;
+  hostIdentity: string;
+  live: boolean;
+  isFollowing: boolean;
 }
 
-const Header = ({
-  imageUrl,
-  hostName,
-  hostIdentity,
-  viewerIdentity,
-  isFollowing,
-  live,
-}: HeaderProps) => {
+const Header = ({ imageUrl, hostName, hostIdentity, live }: HeaderProps) => {
   const participants = useParticipants();
   const participant = useRemoteParticipant(`host-${hostIdentity}`);
   const { collapsed } = useChatSidebar((state) => state);
@@ -40,11 +38,8 @@ const Header = ({
   const isLive = !!participant && live;
   const participantCount = participants.length - 1;
 
-  const hostAsViewer = `host-${hostIdentity}`;
-  const isHost = viewerIdentity === hostAsViewer;
-
   return (
-    <div className="flex gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2 max-md:flex-col">
+    <div className="flex gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-2 max-md:flex-col max-lg:hidden">
       <div className="flex items-center gap-x-3">
         <UserAvatar
           imageUrl={imageUrl}
@@ -73,11 +68,6 @@ const Header = ({
       </div>
       <div className="flex space-x-2">
         <div className="flex flex-col gap-2 max-md:flex-row max-md:w-full max-md:justify-between">
-          <Actions
-            isFollowing={isFollowing}
-            hostIdentity={hostIdentity}
-            isHost={isHost}
-          />
           <TipModal />
         </div>
         {collapsed && (
@@ -91,6 +81,54 @@ const Header = ({
 };
 
 export default Header;
+
+export const MinHeader = ({
+  identity,
+  hostName,
+  hostIdentity,
+  live,
+  isFollowing,
+}: MinHeaderProps) => {
+  const participants = useParticipants();
+  const participant = useRemoteParticipant(`host-${hostIdentity}`);
+  
+  const hostAsViewer = `host-${hostIdentity}`;
+  const isHost = identity === hostAsViewer;
+
+  const isLive = !!participant && live;
+  const participantCount = participants.length - 1;
+
+  return (
+    <div className="flex gap-y-4 lg:gap-y-0 items-start justify-between px-4 py-1 border-b border-[#D9D9D9] lg:hidden">
+      <div className="flex items-center gap-x-3">
+        <div className="space-y-1">
+          <div className="flex items-center gap-x-2">
+            <h2 className="text-sm font-medium text-n-1">{hostName}</h2>
+          </div>
+          {isLive ? (
+            <div className="font-semibold flex gap-x-1 items-center text-[10px] text-n-3">
+              <p>
+                {participantCount}{" "}
+                {participantCount === 1 ? "viewer" : "viewers"}
+              </p>
+            </div>
+          ) : (
+            <p className="font-semibold text-[10px] text-n-3">Offline</p>
+          )}
+        </div>
+      </div>
+      <div className="flex space-x-2">
+        <div className="flex flex-col gap-2 max-md:flex-row max-md:w-full max-md:justify-between">
+          <Actions
+            hostIdentity={hostIdentity}
+            isFollowing={isFollowing}
+            isHost={isHost}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
 
 export const HeaderSkeleton = () => {
   return (

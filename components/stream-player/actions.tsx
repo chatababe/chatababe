@@ -61,7 +61,8 @@ const Actions = ({ hostIdentity, isFollowing, isHost }: ActionsProps) => {
       disabled={isPending || isHost}
       onClick={toggleFollow}
       className="w-full lg:w-auto"
-      variant="default"
+      variant="green"
+      size="sm"
     >
       <Heart
         className={cn(

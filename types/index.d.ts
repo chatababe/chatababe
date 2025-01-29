@@ -35,6 +35,7 @@ interface PageProps {
     room?: string;
     genre?: string;
     country?: string;
+    page?:string
   }>
  }
 
@@ -43,6 +44,25 @@ interface FilterTags {
   room?: string;
   genre?: string;
   country?: string;
+}
+type User = {
+  id: string;
+  username: string;
+  imageUrl: string;
+  profile: {
+    age: number;
+  } | null;
+};
+interface ResultCardProps {
+  data: {
+    user: User;
+    isLive: boolean;
+    name: string;
+    thumbnailUrl: string | null;
+    goalText: string | null;
+    type: string | null;
+    tags: string[] | null;
+  };
 }
 interface StreamsProps {
   id: string;

@@ -4,7 +4,7 @@ import Results, { ResultsSkeleton } from "../_components/results";
 import { getStreams } from "@/lib/feed-service";
 
 export default async function RootPage({ searchParams }: PageProps) {
-  const {type,year,room,genre,country} = await searchParams;
+  const {type,year,room,genre,country,page} = await searchParams;
   let gender = ""
   
   if(type === "men"){
@@ -20,7 +20,7 @@ export default async function RootPage({ searchParams }: PageProps) {
   return (
     <div className="h-full">
       <Suspense fallback={<ResultsSkeleton />}>
-        <Results tags={{year,room,genre,country}} fetchData={()=>getStreams(gender)}/>
+        <Results tags={{year,room,genre,country}} fetchData={()=>getStreams(gender)} page={parseInt(page || "1")}/>
       </Suspense>
     </div>
   );
